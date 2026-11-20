@@ -1254,6 +1254,262 @@
       border: 2px solid var(--bg);
     }
 
+    /* Packs, Process & FAQ Sections */
+    .packs-section {
+      padding: 4.5rem 0 2rem;
+    }
+
+    .packs-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 1.35rem;
+      align-items: stretch;
+      margin-top: 2.2rem;
+    }
+
+    .pack-card {
+      position: relative;
+      background: var(--bg-elevated);
+      border: 1px solid var(--border);
+      border-radius: 22px;
+      padding: 1.9rem 1.65rem;
+      display: flex;
+      flex-direction: column;
+      gap: 1rem;
+      box-shadow: var(--shadow-lg);
+      transition: transform 0.25s cubic-bezier(0.22, 1, 0.36, 1), border-color 0.25s ease;
+    }
+
+    .pack-card:hover {
+      transform: translateY(-4px);
+      border-color: var(--border-strong);
+    }
+
+    .pack-card.featured {
+      border: 2px solid var(--accent);
+      box-shadow: 0 24px 64px -16px var(--glow), var(--shadow-lg);
+    }
+
+    .pack-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.35rem;
+      align-self: flex-start;
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.72rem;
+      font-weight: 700;
+      letter-spacing: 0.04em;
+      text-transform: uppercase;
+      padding: 0.32rem 0.7rem;
+      border-radius: 999px;
+      background: var(--bg-surface);
+      color: var(--text-muted);
+      border: 1px solid var(--border);
+    }
+
+    .pack-card.featured .pack-badge {
+      background: var(--accent);
+      color: #FFFFFF;
+      border-color: transparent;
+    }
+
+    .pack-title {
+      font-size: 1.35rem;
+      font-weight: 800;
+      letter-spacing: -0.025em;
+      line-height: 1.2;
+    }
+
+    .pack-subtitle {
+      font-size: 0.88rem;
+      color: var(--text-muted);
+      line-height: 1.45;
+    }
+
+    .pack-list {
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      gap: 0.65rem;
+      margin: 0.4rem 0 0.8rem;
+      flex: 1;
+    }
+
+    .pack-list li {
+      display: flex;
+      align-items: flex-start;
+      gap: 0.55rem;
+      font-size: 0.9rem;
+      line-height: 1.42;
+      color: var(--text);
+    }
+
+    .pack-check {
+      color: var(--accent-2);
+      font-weight: 800;
+      flex-shrink: 0;
+      margin-top: 1px;
+    }
+
+    .pack-note {
+      font-size: 0.8rem;
+      color: var(--text-muted);
+      padding-top: 0.7rem;
+      border-top: 1px dashed var(--border);
+      line-height: 1.4;
+    }
+
+    .pack-cta {
+      display: inline-flex;
+      justify-content: center;
+      align-items: center;
+      gap: 0.45rem;
+      width: 100%;
+      padding: 0.92rem 1.15rem;
+      border-radius: 13px;
+      font-weight: 700;
+      font-size: 0.92rem;
+      text-decoration: none;
+      text-align: center;
+      transition: transform 0.2s ease, opacity 0.2s ease;
+      background: var(--bg-surface);
+      color: var(--text);
+      border: 1px solid var(--border-strong);
+    }
+
+    .pack-cta:hover {
+      transform: translateY(-1px);
+    }
+
+    .pack-card.featured .pack-cta {
+      background: var(--accent);
+      color: #FFFFFF;
+      border-color: transparent;
+    }
+
+    .packs-addon-bar {
+      margin-top: 1.4rem;
+      padding: 1.05rem 1.35rem;
+      border-radius: 16px;
+      background: var(--bg-surface);
+      border: 1px solid var(--border);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 1rem;
+      flex-wrap: wrap;
+      font-size: 0.9rem;
+      color: var(--text-muted);
+    }
+
+    .packs-addon-bar strong {
+      color: var(--text);
+    }
+
+    .process-section {
+      padding: 3.5rem 0 2rem;
+    }
+
+    .process-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 1.25rem;
+      margin-top: 1.9rem;
+    }
+
+    .process-step {
+      background: var(--bg-elevated);
+      border: 1px solid var(--border);
+      border-radius: 18px;
+      padding: 1.5rem 1.4rem;
+    }
+
+    .process-num {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.8rem;
+      font-weight: 700;
+      color: var(--accent);
+      margin-bottom: 0.55rem;
+      display: block;
+    }
+
+    .process-step h3 {
+      font-size: 1.08rem;
+      font-weight: 800;
+      margin-bottom: 0.45rem;
+    }
+
+    .process-step p {
+      font-size: 0.9rem;
+      color: var(--text-muted);
+      line-height: 1.5;
+    }
+
+    .faq-section {
+      padding: 2.5rem 0 3.5rem;
+    }
+
+    .faq-list {
+      max-width: 820px;
+      margin: 1.8rem auto 0;
+      display: flex;
+      flex-direction: column;
+      gap: 0.85rem;
+    }
+
+    .faq-item {
+      background: var(--bg-elevated);
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      padding: 1.1rem 1.35rem;
+      transition: border-color 0.2s ease;
+    }
+
+    .faq-item[open] {
+      border-color: var(--border-strong);
+    }
+
+    .faq-item summary {
+      font-weight: 700;
+      font-size: 0.98rem;
+      cursor: pointer;
+      list-style: none;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 1rem;
+    }
+
+    .faq-item summary::-webkit-details-marker {
+      display: none;
+    }
+
+    .faq-item summary::after {
+      content: "+";
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 1.2rem;
+      color: var(--accent);
+      flex-shrink: 0;
+    }
+
+    .faq-item[open] summary::after {
+      content: "−";
+    }
+
+    .faq-item p {
+      margin-top: 0.75rem;
+      font-size: 0.92rem;
+      color: var(--text-muted);
+      line-height: 1.55;
+    }
+
+    @media (max-width: 920px) {
+      .packs-grid,
+      .process-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+
     /* Mandatory Reduced Motion Safety */
     @media (prefers-reduced-motion: reduce) {
       *, ::before, ::after {
@@ -1305,8 +1561,9 @@
       </a>
       <div class="nav-links">
         <a href="#sistemas" class="nav-item">Servicios</a>
-        <a href="#transformacion" class="nav-item">Cómo Funciona</a>
-        <a href="#impacto" class="nav-item">Tiempo Recuperado</a>
+        <a href="#packs" class="nav-item">Packs</a>
+        <a href="#proceso" class="nav-item">Proceso</a>
+        <a href="#faq" class="nav-item">FAQ</a>
         <button class="btn-ghost" id="themeToggle" onclick="toggleTheme()">🌙 Oscuro</button>
         <button type="button" class="btn-cta-sm" style="border:none;cursor:pointer;font-family:inherit;" onclick="openAiWidget()">Prototipo Gratis →</button>
       </div>
@@ -1513,6 +1770,132 @@
           <span class="bento-icon">🚀</span>
           <h3>Implementación en Días, No Meses</h3>
           <p>Relevamos qué necesita tu negocio hoy, te mostramos un prototipo funcionando sin cargo y lo entregamos llave en mano.</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- PACKS / SOLUCIONES EMPAQUETADAS -->
+    <section class="packs-section" id="packs">
+      <div class="container">
+        <div class="section-head">
+          <span class="step-num">SOLUCIONES LLAVE EN MANO</span>
+          <h2>Elegí el pack que mejor encaja con tu etapa actual.</h2>
+          <p>Sin comisiones por venta, sin letra chica y con <strong>prototipo funcional sin cargo</strong> antes de comprometerte.</p>
+        </div>
+
+        <div class="packs-grid">
+          <!-- PACK 1 -->
+          <article class="pack-card">
+            <span class="pack-badge">Pack 01 · Inicial</span>
+            <h3 class="pack-title">Presencia & Ventas</h3>
+            <p class="pack-subtitle">Para comercios, profesionales o marcas que hoy solo atienden mensajes sueltos y quieren vender con imagen profesional.</p>
+            <ul class="pack-list">
+              <li><span class="pack-check">✓</span><span><strong>Página web rápida</strong> adaptada a celular y PC (o catálogo online interactivo)</span></li>
+              <li><span class="pack-check">✓</span><span><strong>Setup de Instagram:</strong> perfil optimizado, historias destacadas y link en bio inteligente</span></li>
+              <li><span class="pack-check">✓</span><span>Botones directos a tu <strong>WhatsApp</strong> con consulta o pedido prearmado</span></li>
+              <li><span class="pack-check">✓</span><span>Entrega rápida llave en mano</span></li>
+            </ul>
+            <div class="pack-note">Opcional: gestión mensual de contenido y mantenimiento de redes.</div>
+            <a class="pack-cta" href="https://wa.me/5492604059284?text=Hola%20Jos%C3%A9%2C%20me%20interesa%20el%20Pack%201%20(Presencia%20%26%20Ventas%3A%20Web%20%2B%20Instagram)%20de%20Nexo%20Cuyo." target="_blank" rel="noopener">
+              Consultar Pack 1 por WhatsApp →
+            </a>
+          </article>
+
+          <!-- PACK 2 (FEATURED) -->
+          <article class="pack-card featured">
+            <span class="pack-badge">⭐ Más Elegido</span>
+            <h3 class="pack-title">Negocio Ordenado</h3>
+            <p class="pack-subtitle">Para negocios con movimiento diario que necesitan ordenar stock, presupuestos, caja o turnos y dejar atrás las planillas rotas.</p>
+            <ul class="pack-list">
+              <li><span class="pack-check">✓</span><span><strong>Todo lo del Pack 1</strong> (Página web + catálogo + Instagram conectado)</span></li>
+              <li><span class="pack-check">✓</span><span><strong>Sistema de gestión a medida:</strong> stock, presupuestos, pedidos, turnos o caja</span></li>
+              <li><span class="pack-check">✓</span><span>Panel simple desde el celular o compu + reportes automáticos</span></li>
+              <li><span class="pack-check">✓</span><span><strong>0% comisiones</strong> por venta o reserva</span></li>
+            </ul>
+            <div class="pack-note">Te mostramos un prototipo funcionando con tus datos reales antes de empezar.</div>
+            <a class="pack-cta" href="https://wa.me/5492604059284?text=Hola%20Jos%C3%A9%2C%20me%20interesa%20el%20Pack%202%20(Negocio%20Ordenado%3A%20Web%20%2B%20Sistema%20de%20Gesti%C3%B3n)%20de%20Nexo%20Cuyo." target="_blank" rel="noopener">
+              Pedir Prototipo Gratis (Pack 2) →
+            </a>
+          </article>
+
+          <!-- PACK 3 -->
+          <article class="pack-card">
+            <span class="pack-badge">Pack 03 · Escala</span>
+            <h3 class="pack-title">Ecosistema Completo</h3>
+            <p class="pack-subtitle">Para empresas, locales con equipo o varias sucursales que buscan centralizar operación, ventas y atención automática 24/7.</p>
+            <ul class="pack-list">
+              <li><span class="pack-check">✓</span><span><strong>Sistema de gestión multiusuario</strong> o multisucursal a medida</span></li>
+              <li><span class="pack-check">✓</span><span><strong>Web + Catálogo + Instagram</strong> integrados en un solo embudo</span></li>
+              <li><span class="pack-check">✓</span><span>Automatización de consultas, recordatorios, seguimiento y alertas diarias</span></li>
+              <li><span class="pack-check">✓</span><span>Soporte prioritario y evolución continua del sistema</span></li>
+            </ul>
+            <div class="pack-note">Arquitectura dedicada pensada para escalar sin sumar carga administrativa.</div>
+            <a class="pack-cta" href="https://wa.me/5492604059284?text=Hola%20Jos%C3%A9%2C%20me%20interesa%20el%20Pack%203%20(Ecosistema%20Completo%3A%20Gesti%C3%B3n%2C%20Web%2C%20Instagram%20y%20Automatizaci%C3%B3n)%20de%20Nexo%20Cuyo." target="_blank" rel="noopener">
+              Consultar Pack 3 por WhatsApp →
+            </a>
+          </article>
+        </div>
+
+        <div class="packs-addon-bar">
+          <span>📱 <strong>¿Solo necesitás uno de los módulos?</strong> Podemos empezar únicamente con tu página web, tu sistema de gestión o tu Instagram, y sumar el resto después.</span>
+          <a href="https://wa.me/5492604059284?text=Hola%20Jos%C3%A9%2C%20quiero%20consultar%20por%20un%20m%C3%B3dulo%20puntual%20para%20mi%20negocio." target="_blank" rel="noopener" style="color:var(--accent);font-weight:700;text-decoration:none;white-space:nowrap;">Armar a medida →</a>
+        </div>
+      </div>
+    </section>
+
+    <!-- PROCESO EN 3 PASOS -->
+    <section class="process-section" id="proceso">
+      <div class="container">
+        <div class="section-head">
+          <span class="step-num">CÓMO TRABAJAMOS</span>
+          <h2>De tu idea a un sistema funcionando en 3 pasos simples.</h2>
+        </div>
+
+        <div class="process-grid">
+          <div class="process-step">
+            <span class="process-num">PASO 01 · 15 MINUTOS</span>
+            <h3>Diagnóstico directo</h3>
+            <p>Nos contás cómo trabajás hoy por WhatsApp o llamada corta y detectamos rápido qué te conviene ordenar o lanzar primero.</p>
+          </div>
+          <div class="process-step">
+            <span class="process-num">PASO 02 · EN 48 HORAS</span>
+            <h3>Prototipo funcional sin cargo</h3>
+            <p>Te mostramos una versión real funcionando adaptada a tu rubro para que veas exactamente cómo queda antes de invertir.</p>
+          </div>
+          <div class="process-step">
+            <span class="process-num">PASO 03 · EN DÍAS</span>
+            <h3>Lanzamiento llave en mano</h3>
+            <p>Ajustamos detalles con vos, dejamos todo publicado y conectado a tu WhatsApp e Instagram, y te acompañamos en la puesta en marcha.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- PREGUNTAS FRECUENTES -->
+    <section class="faq-section" id="faq">
+      <div class="container">
+        <div class="section-head">
+          <span class="step-num">PREGUNTAS FRECUENTES</span>
+          <h2>Respuestas claras antes de empezar.</h2>
+        </div>
+
+        <div class="faq-list">
+          <details class="faq-item" open>
+            <summary>¿Cómo funciona el prototipo funcional sin cargo?</summary>
+            <p>Nos contás qué necesitás (sistema de gestión, página web o Instagram) y en 48 horas te enviamos un enlace real para que lo pruebes en tu celular. Si te convence, avanzamos; si no, no pagás nada.</p>
+          </details>
+          <details class="faq-item">
+            <summary>¿Tengo que pagar comisiones por cada venta o turno?</summary>
+            <p>No. A diferencia de plataformas enlatadas, el sistema y la web se diseñan para tu negocio con 0% de comisión por operación.</p>
+          </details>
+          <details class="faq-item">
+            <summary>¿Tengo que cambiar mi número de WhatsApp o mi cuenta de Instagram?</summary>
+            <p>Para nada. Todo se conecta a tu WhatsApp actual y a tu Instagram oficial, respetando las reglas de cada plataforma y sin riesgo para tus cuentas.</p>
+          </details>
+          <details class="faq-item">
+            <summary>¿Cuánto tarda en estar online?</summary>
+            <p>Una página web profesional o setup de Instagram suele quedar listo en pocos días. Un sistema de gestión a medida se entrega por etapas funcionales desde la primera semana para que lo empieces a usar cuanto antes.</p>
+          </details>
         </div>
       </div>
     </section>
