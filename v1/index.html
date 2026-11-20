@@ -1,0 +1,1020 @@
+<!DOCTYPE html>
+<html lang="es-AR" data-theme="warm">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Nexo Cuyo — Turneros, Webs Interactivas y Automatización IA en San Rafael y Mendoza</title>
+  <meta name="description" content="Automatizá tus turnos, pedidos y consultas por WhatsApp sin comisiones ni bloqueos. Soluciones rápidas para comercios, cabañas y PyMEs en San Rafael y Cuyo." />
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=JetBrains+Mono:wght@500;600&display=swap" rel="stylesheet">
+  <style>
+    :root[data-theme="warm"] {
+      --bg: #F6F3EC;
+      --bg-elevated: #FFFFFF;
+      --bg-subtle: #EDE8DD;
+      --text: #181613;
+      --text-muted: #5C564D;
+      --border: #DDD5C7;
+      --accent: #B84A24;
+      --accent-hover: #9B3B1A;
+      --accent-soft: rgba(184, 74, 36, 0.11);
+      --wa: #168A45;
+      --wa-soft: rgba(22, 138, 69, 0.12);
+      --shadow: 0 12px 32px -8px rgba(24, 22, 19, 0.08);
+    }
+
+    :root[data-theme="dark"] {
+      --bg: #0E1015;
+      --bg-elevated: #171A22;
+      --bg-subtle: #202531;
+      --text: #F3F4F6;
+      --text-muted: #9CA3AF;
+      --border: #2B3140;
+      --accent: #F97316;
+      --accent-hover: #EA580C;
+      --accent-soft: rgba(249, 115, 22, 0.14);
+      --wa: #22C55E;
+      --wa-soft: rgba(34, 197, 94, 0.14);
+      --shadow: 0 14px 36px -8px rgba(0, 0, 0, 0.45);
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      font-family: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      line-height: 1.5;
+      transition: background 0.2s ease, color 0.2s ease;
+      padding-bottom: 5.5rem;
+    }
+
+    .container {
+      max-width: 1100px;
+      margin: 0 auto;
+      padding: 0 1.25rem;
+    }
+
+    /* Top Nav */
+    header {
+      position: sticky;
+      top: 0;
+      z-index: 50;
+      background: color-mix(in srgb, var(--bg) 88%, transparent);
+      backdrop-filter: blur(12px);
+      border-bottom: 1px solid var(--border);
+    }
+
+    .nav-bar {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      height: 64px;
+    }
+
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 0.65rem;
+      font-weight: 800;
+      font-size: 1.15rem;
+      letter-spacing: -0.02em;
+    }
+
+    .brand-mark {
+      width: 34px;
+      height: 34px;
+      border-radius: 9px;
+      background: var(--accent);
+      color: #fff;
+      display: grid;
+      place-items: center;
+      font-family: 'JetBrains Mono', monospace;
+      font-weight: 700;
+      font-size: 0.95rem;
+    }
+
+    .brand-tag {
+      font-size: 0.72rem;
+      font-weight: 600;
+      padding: 0.18rem 0.55rem;
+      border-radius: 999px;
+      background: var(--accent-soft);
+      color: var(--accent);
+    }
+
+    .nav-actions {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+
+    .btn-icon {
+      border: 1px solid var(--border);
+      background: var(--bg-elevated);
+      color: var(--text);
+      padding: 0.45rem 0.75rem;
+      border-radius: 8px;
+      font-size: 0.8rem;
+      font-weight: 600;
+      cursor: pointer;
+      text-decoration: none;
+    }
+
+    /* Hero */
+    .hero {
+      padding: 1.35rem 0 1rem;
+      text-align: center;
+    }
+
+    .pill-banner {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.45rem;
+      padding: 0.3rem 0.8rem;
+      border-radius: 999px;
+      background: var(--bg-elevated);
+      border: 1px solid var(--border);
+      font-size: 0.78rem;
+      font-weight: 600;
+      color: var(--text-muted);
+      margin-bottom: 0.65rem;
+    }
+
+    .hero h1 {
+      font-size: clamp(1.65rem, 3.6vw, 2.45rem);
+      font-weight: 800;
+      letter-spacing: -0.03em;
+      line-height: 1.12;
+      max-width: 780px;
+      margin: 0 auto 0.65rem;
+    }
+
+    .hero h1 span {
+      color: var(--accent);
+    }
+
+    .hero p {
+      font-size: 0.96rem;
+      color: var(--text-muted);
+      max-width: 640px;
+      margin: 0 auto 0.95rem;
+    }
+
+    .hero-cta-row {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 0.65rem;
+      margin-bottom: 1rem;
+    }
+
+    .btn-primary-wa {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      background: var(--wa);
+      color: #fff;
+      font-weight: 700;
+      font-size: 0.95rem;
+      padding: 0.8rem 1.35rem;
+      border-radius: 11px;
+      text-decoration: none;
+      box-shadow: 0 6px 18px rgba(22, 138, 69, 0.25);
+    }
+
+    .btn-secondary-mail {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.45rem;
+      background: var(--bg-elevated);
+      color: var(--text);
+      border: 1.5px solid var(--border);
+      font-weight: 700;
+      font-size: 0.92rem;
+      padding: 0.8rem 1.2rem;
+      border-radius: 11px;
+      text-decoration: none;
+    }
+
+    /* Simulator Section */
+    .sim-wrapper {
+      background: var(--bg-elevated);
+      border: 1px solid var(--border);
+      border-radius: 18px;
+      box-shadow: var(--shadow);
+      overflow: hidden;
+      margin-bottom: 2rem;
+    }
+
+    .sim-tabs {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      background: var(--bg-subtle);
+      border-bottom: 1px solid var(--border);
+      padding: 0.35rem;
+      gap: 0.35rem;
+    }
+
+    .sim-tab {
+      border: none;
+      background: transparent;
+      color: var(--text-muted);
+      font-family: inherit;
+      font-weight: 700;
+      font-size: 0.86rem;
+      padding: 0.75rem 0.5rem;
+      border-radius: 12px;
+      cursor: pointer;
+      transition: all 0.15s ease;
+    }
+
+    .sim-tab.active {
+      background: var(--bg-elevated);
+      color: var(--text);
+      box-shadow: 0 2px 8px rgba(0,0,0,0.06);
+    }
+
+    .sim-body {
+      padding: 1.5rem;
+    }
+
+    .sim-grid {
+      display: grid;
+      grid-template-columns: 1.15fr 0.85fr;
+      gap: 1.5rem;
+      align-items: start;
+    }
+
+    @media (max-width: 820px) {
+      .sim-grid {
+        grid-template-columns: 1fr;
+      }
+      .sim-tabs {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    .shop-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding-bottom: 1rem;
+      margin-bottom: 1.1rem;
+      border-bottom: 1px solid var(--border);
+    }
+
+    .shop-title {
+      font-size: 1.2rem;
+      font-weight: 800;
+    }
+
+    .shop-sub {
+      font-size: 0.82rem;
+      color: var(--text-muted);
+    }
+
+    .badge-live {
+      font-size: 0.74rem;
+      font-weight: 700;
+      padding: 0.25rem 0.6rem;
+      border-radius: 999px;
+      background: var(--wa-soft);
+      color: var(--wa);
+    }
+
+    .step-label {
+      font-size: 0.78rem;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      font-weight: 700;
+      color: var(--text-muted);
+      margin: 0.9rem 0 0.45rem;
+    }
+
+    .options-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(145px, 1fr));
+      gap: 0.55rem;
+    }
+
+    .opt-card {
+      border: 1.5px solid var(--border);
+      background: var(--bg);
+      color: var(--text);
+      border-radius: 11px;
+      padding: 0.7rem 0.8rem;
+      cursor: pointer;
+      text-align: left;
+      transition: all 0.14s ease;
+    }
+
+    .opt-card.selected {
+      border-color: var(--accent);
+      background: var(--accent-soft);
+    }
+
+    .opt-name {
+      font-weight: 700;
+      font-size: 0.9rem;
+      display: block;
+    }
+
+    .opt-price {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.8rem;
+      color: var(--text-muted);
+    }
+
+    .time-pills {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.45rem;
+    }
+
+    .time-pill {
+      border: 1.5px solid var(--border);
+      background: var(--bg);
+      color: var(--text);
+      padding: 0.45rem 0.8rem;
+      border-radius: 8px;
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.82rem;
+      font-weight: 600;
+      cursor: pointer;
+    }
+
+    .time-pill.selected {
+      border-color: var(--accent);
+      background: var(--accent);
+      color: #fff;
+    }
+
+    .input-field {
+      width: 100%;
+      padding: 0.7rem 0.85rem;
+      border-radius: 10px;
+      border: 1.5px solid var(--border);
+      background: var(--bg);
+      color: var(--text);
+      font-family: inherit;
+      font-size: 0.92rem;
+    }
+
+    /* Right Preview Box */
+    .wa-preview {
+      background: var(--bg);
+      border: 1px solid var(--border);
+      border-radius: 14px;
+      padding: 1.2rem;
+    }
+
+    .wa-preview-header {
+      font-size: 0.8rem;
+      font-weight: 700;
+      color: var(--text-muted);
+      margin-bottom: 0.65rem;
+      display: flex;
+      justify-content: space-between;
+    }
+
+    .wa-bubble {
+      background: var(--bg-elevated);
+      border-left: 4px solid var(--wa);
+      padding: 0.9rem;
+      border-radius: 10px;
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.8rem;
+      white-space: pre-line;
+      margin-bottom: 1rem;
+      border: 1px solid var(--border);
+    }
+
+    .btn-wa {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 0.5rem;
+      width: 100%;
+      padding: 0.85rem 1rem;
+      border: none;
+      border-radius: 11px;
+      background: var(--wa);
+      color: #fff;
+      font-family: inherit;
+      font-weight: 700;
+      font-size: 0.95rem;
+      cursor: pointer;
+      text-decoration: none;
+    }
+
+    .btn-wa:hover {
+      filter: brightness(1.06);
+    }
+
+    /* AI Chat Mini Demo */
+    .chat-window {
+      background: var(--bg);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 0.9rem;
+      height: 230px;
+      overflow-y: auto;
+      display: flex;
+      flex-direction: column;
+      gap: 0.6rem;
+      margin-bottom: 0.75rem;
+    }
+
+    .msg {
+      max-width: 85%;
+      padding: 0.6rem 0.8rem;
+      border-radius: 10px;
+      font-size: 0.86rem;
+    }
+
+    .msg.bot {
+      align-self: flex-start;
+      background: var(--bg-elevated);
+      border: 1px solid var(--border);
+    }
+
+    .msg.user {
+      align-self: flex-end;
+      background: var(--accent);
+      color: #fff;
+    }
+
+    .quick-questions {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.4rem;
+      margin-bottom: 0.65rem;
+    }
+
+    .q-chip {
+      font-size: 0.76rem;
+      padding: 0.35rem 0.65rem;
+      border-radius: 999px;
+      border: 1px solid var(--border);
+      background: var(--bg-subtle);
+      color: var(--text);
+      cursor: pointer;
+      font-weight: 600;
+    }
+
+    /* Video Pitch Box */
+    .video-section {
+      background: var(--bg-elevated);
+      border: 1px solid var(--border);
+      border-radius: 18px;
+      padding: 1.5rem;
+      margin-bottom: 2rem;
+      box-shadow: var(--shadow);
+    }
+
+    .video-header {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: space-between;
+      align-items: center;
+      gap: 0.75rem;
+      margin-bottom: 1rem;
+    }
+
+    .video-frame {
+      width: 100%;
+      border-radius: 12px;
+      border: 1px solid var(--border);
+      background: #0E1015;
+      max-height: 520px;
+    }
+
+    /* Cards & Direct Contact */
+    .cards-3 {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 1.1rem;
+      margin-bottom: 2rem;
+    }
+
+    .info-card {
+      background: var(--bg-elevated);
+      border: 1px solid var(--border);
+      border-radius: 14px;
+      padding: 1.35rem;
+    }
+
+    .info-card h3 {
+      font-size: 1.05rem;
+      margin-bottom: 0.45rem;
+    }
+
+    .info-card p {
+      font-size: 0.88rem;
+      color: var(--text-muted);
+    }
+
+    .cta-banner {
+      background: var(--bg-elevated);
+      border: 2px solid var(--accent);
+      border-radius: 18px;
+      padding: 1.75rem;
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      justify-content: space-between;
+      gap: 1.25rem;
+      box-shadow: var(--shadow);
+    }
+
+    .cta-banner h2 {
+      font-size: 1.35rem;
+      margin-bottom: 0.3rem;
+    }
+
+    .cta-banner p {
+      font-size: 0.92rem;
+      color: var(--text-muted);
+    }
+
+    /* Floating Bottom Bar */
+    .sticky-cta {
+      position: fixed;
+      bottom: 14px;
+      left: 50%;
+      transform: translateX(-50%);
+      z-index: 60;
+      background: var(--bg-elevated);
+      border: 1.5px solid var(--border);
+      box-shadow: 0 10px 30px rgba(0,0,0,0.22);
+      border-radius: 999px;
+      padding: 0.45rem 0.65rem 0.45rem 1.1rem;
+      display: flex;
+      align-items: center;
+      gap: 0.85rem;
+      max-width: 95vw;
+    }
+
+    .sticky-cta span {
+      font-size: 0.82rem;
+      font-weight: 700;
+      white-space: nowrap;
+    }
+
+    .sticky-cta a {
+      background: var(--wa);
+      color: #fff;
+      text-decoration: none;
+      font-size: 0.82rem;
+      font-weight: 700;
+      padding: 0.5rem 0.95rem;
+      border-radius: 999px;
+      white-space: nowrap;
+    }
+
+    /* Street Mode Modal */
+    .modal-backdrop {
+      position: fixed;
+      inset: 0;
+      background: rgba(0,0,0,0.6);
+      display: none;
+      place-items: center;
+      z-index: 100;
+      padding: 1rem;
+    }
+
+    .modal-backdrop.open {
+      display: grid;
+    }
+
+    .modal {
+      background: var(--bg-elevated);
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      padding: 1.5rem;
+      width: 100%;
+      max-width: 440px;
+    }
+
+    footer {
+      margin-top: 2.5rem;
+      padding-top: 1.5rem;
+      border-top: 1px solid var(--border);
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: space-between;
+      align-items: center;
+      gap: 1rem;
+      font-size: 0.84rem;
+      color: var(--text-muted);
+    }
+  </style>
+</head>
+<body>
+
+  <header>
+    <div class="container nav-bar">
+      <div class="brand">
+        <div class="brand-mark">NC</div>
+        <span>Nexo Cuyo</span>
+        <span class="brand-tag">San Rafael · Mendoza</span>
+      </div>
+      <div class="nav-actions">
+        <button class="btn-icon" id="btn-street-mode" onclick="openStreetModal()" title="Personalizar demo para un comercio en 5 segundos">⚡ Modo Calle</button>
+        <button class="btn-icon" id="btn-theme-toggle" onclick="toggleTheme()">🌙 Oscuro</button>
+      </div>
+    </div>
+  </header>
+
+  <main class="container">
+    <section class="hero">
+      <div class="pill-banner">⚡ Sin comisiones por venta · Sin riesgo de bloqueo en tu WhatsApp</div>
+      <h1>Tu negocio atiende, cotiza y agenda turnos solo <span>mientras vos trabajás</span>.</h1>
+      <p>Probá en vivo acá abajo cómo tus clientes reservan turno, arman su pedido o consultan precios con IA en 10 segundos y te llega todo listo a tu WhatsApp de siempre.</p>
+      <div class="hero-cta-row">
+        <a class="btn-primary-wa" href="https://wa.me/5492604059284?text=Hola%20Jos%C3%A9%2C%20vi%20la%20demo%20de%20Nexo%20Cuyo%20y%20quiero%20consultar%20para%20mi%20negocio%20en%20San%20Rafael." target="_blank" rel="noopener">
+          💬 Hablar por WhatsApp (+54 9 260 405-9284)
+        </a>
+        <a class="btn-secondary-mail" href="mailto:romanfjose@gmail.com?subject=Consulta%20Nexo%20Cuyo%20-%20San%20Rafael">
+          ✉️ romanfjose@gmail.com
+        </a>
+      </div>
+    </section>
+
+    <section class="sim-wrapper" id="simulador">
+      <div class="sim-tabs">
+        <button class="sim-tab active" id="tab-btn-barber" onclick="switchTab('barber', this)">💈 1. Turnero Express (Barberías / Turnos)</button>
+        <button class="sim-tab" id="tab-btn-ai" onclick="switchTab('ai', this)">🤖 2. Asistente IA + Pedidos (0% Comisión)</button>
+        <button class="sim-tab" id="tab-btn-pyme" onclick="switchTab('pyme', this)">🏔️ 3. Cabañas & PyMEs (Cotizador Directo)</button>
+      </div>
+
+      <!-- TAB 1: BARBER / TURNERO -->
+      <div class="sim-body" id="tab-barber">
+        <div class="sim-grid">
+          <div>
+            <div class="shop-header">
+              <div>
+                <div class="shop-title" id="barberShopName">Barbería & Estudio Centro</div>
+                <div class="shop-sub">San Rafael, Mendoza · Turnos Online en 3 Toques</div>
+              </div>
+              <span class="badge-live">● Disponible Hoy</span>
+            </div>
+
+            <div class="step-label">Paso 1 · Elegí tu servicio</div>
+            <div class="options-grid" id="barberServices">
+              <button class="opt-card selected" id="svc-fade" onclick="selectService(this, 'Corte Clásico / Fade', '$10.000')">
+                <span class="opt-name">Corte Clásico / Fade</span>
+                <span class="opt-price">$10.000 · 30 min</span>
+              </button>
+              <button class="opt-card" id="svc-barba" onclick="selectService(this, 'Corte + Barba Completa', '$14.000')">
+                <span class="opt-name">Corte + Barba</span>
+                <span class="opt-price">$14.000 · 45 min</span>
+              </button>
+              <button class="opt-card" id="svc-perfilado" onclick="selectService(this, 'Perfilado de Barba & Cejas', '$7.000')">
+                <span class="opt-name">Barba & Cejas</span>
+                <span class="opt-price">$7.000 · 20 min</span>
+              </button>
+            </div>
+
+            <div class="step-label">Paso 2 · Elegí día y horario libre</div>
+            <div class="time-pills" id="barberTimes">
+              <button class="time-pill" onclick="selectTime(this, 'Hoy 17:00 hs')">Hoy 17:00</button>
+              <button class="time-pill selected" id="time-1830" onclick="selectTime(this, 'Hoy 18:30 hs')">Hoy 18:30</button>
+              <button class="time-pill" id="time-1930" onclick="selectTime(this, 'Hoy 19:30 hs')">Hoy 19:30</button>
+              <button class="time-pill" onclick="selectTime(this, 'Mañana 10:30 hs')">Mañana 10:30</button>
+              <button class="time-pill" onclick="selectTime(this, 'Mañana 17:30 hs')">Mañana 17:30</button>
+            </div>
+
+            <div class="step-label">Paso 3 · Tu nombre</div>
+            <input class="input-field" id="clientName" type="text" placeholder="Ej: Matías" value="Matías" oninput="updateBarberPreview()" />
+          </div>
+
+          <div class="wa-preview">
+            <div class="wa-preview-header">
+              <span>VISTA PREVIA DEL MENSAJE AL DUEÑO</span>
+              <span>WhatsApp Directo</span>
+            </div>
+            <div class="wa-bubble" id="barberWaText"></div>
+            <a class="btn-wa" id="barberWaLink" href="#" target="_blank" rel="noopener">
+              Confirmar Turno por WhatsApp →
+            </a>
+            <p style="font-size:0.76rem; color:var(--text-muted); margin-top:0.65rem; text-align:center;">
+              El cliente no instala nada: toca el link en tu Instagram o el QR de tu espejo y te cae el turno listo.
+            </p>
+          </div>
+        </div>
+      </div>
+
+      <!-- TAB 2: AI ASSISTANT + CATALOG -->
+      <div class="sim-body" id="tab-ai" style="display:none;">
+        <div class="sim-grid">
+          <div>
+            <div class="shop-header">
+              <div>
+                <div class="shop-title" id="aiShopName">Asistente Inteligente 24/7</div>
+                <div class="shop-sub">Atiende consultas de precios, horarios y stock sin bloquear tu WhatsApp</div>
+              </div>
+              <span class="badge-live">● IA Activa</span>
+            </div>
+
+            <div class="step-label">Probá hacerle una pregunta frecuente de cliente:</div>
+            <div class="quick-questions">
+              <button class="q-chip" id="q-horarios" onclick="askAi('¿Qué horarios tienen hoy y dónde están?')">📍 ¿Horarios y dirección?</button>
+              <button class="q-chip" id="q-pagos" onclick="askAi('¿Aceptan MercadoPago o transferencia? ¿Hay recargo?')">💳 ¿Medios de pago?</button>
+              <button class="q-chip" id="q-pedido" onclick="askAi('Quiero encargar 2 promos para retirar a las 21:30')">🍔 Armar pedido rápido</button>
+              <button class="q-chip" onclick="askAi('¿Cómo funciona este sistema para mi negocio?')">⚡ ¿Cómo lo pongo en mi local?</button>
+            </div>
+
+            <div class="chat-window" id="aiChatWindow">
+              <div class="msg bot">
+                ¡Hola! 👋 Soy el asistente automático de <strong id="aiShopInline">tu comercio</strong>. Conozco todos tus precios, horarios y stock en tiempo real. Tocá una pregunta arriba para ver cómo le respondo a tus clientes en 1 segundo.
+              </div>
+            </div>
+          </div>
+
+          <div class="wa-preview">
+            <div class="wa-preview-header">
+              <span>¿POR QUÉ NO SE BLOQUEA TU NÚMERO?</span>
+              <span>Arquitectura Nexo Cuyo</span>
+            </div>
+            <div class="wa-bubble">1️⃣ Tu WhatsApp Business responde solo con 1 mensaje de bienvenida nativo (100% oficial de Meta).
+2️⃣ El cliente toca tu link inteligente: nuestra IA le responde precios, muestra fotos y le arma el pedido o turno.
+3️⃣ A tu celular solo llega el pedido o turno YA CERRADO listo para cobrar.</div>
+            <a class="btn-wa" href="https://wa.me/5492604059284?text=Hola%20Jos%C3%A9%2C%20quiero%20el%20Asistente%20IA%20%2B%20Cat%C3%A1logo%20de%20Nexo%20Cuyo%20para%20mi%20negocio." target="_blank" rel="noopener">
+              Quiero este Asistente en mi Negocio →
+            </a>
+          </div>
+        </div>
+      </div>
+
+      <!-- TAB 3: CABAÑAS & PYMES -->
+      <div class="sim-body" id="tab-pyme" style="display:none;">
+        <div class="sim-grid">
+          <div>
+            <div class="shop-header">
+              <div>
+                <div class="shop-title" id="pymeShopName">Complejo Valle Grande / PyME Local</div>
+                <div class="shop-sub">Cotizador automático de estadías o presupuestos sin pagar 18% de comisión</div>
+              </div>
+              <span class="badge-live">● Reserva Directa</span>
+            </div>
+
+            <div class="step-label">Unidad / Servicio a cotizar</div>
+            <div class="options-grid">
+              <button class="opt-card selected" id="unit-4" onclick="selectPymeUnit(this, 'Cabaña Alpina (Hasta 4 pers.)', 65000)">
+                <span class="opt-name">Cabaña 4 Personas</span>
+                <span class="opt-price">$65.000 / noche</span>
+              </button>
+              <button class="opt-card" id="unit-6" onclick="selectPymeUnit(this, 'Cabaña Familiar (Hasta 6 pers.)', 85000)">
+                <span class="opt-name">Cabaña 6 Personas</span>
+                <span class="opt-price">$85.000 / noche</span>
+              </button>
+              <button class="opt-card" id="unit-2" onclick="selectPymeUnit(this, 'Suite Pareja con Jacuzzi', 55000)">
+                <span class="opt-name">Suite Pareja</span>
+                <span class="opt-price">$55.000 / noche</span>
+              </button>
+            </div>
+
+            <div class="step-label">Cantidad de noches / unidades</div>
+            <div class="time-pills">
+              <button class="time-pill" onclick="selectNights(this, 2)">2 Noches</button>
+              <button class="time-pill selected" onclick="selectNights(this, 4)">4 Noches</button>
+              <button class="time-pill" id="nights-7" onclick="selectNights(this, 7)">7 Noches (10% OFF)</button>
+            </div>
+          </div>
+
+          <div class="wa-preview">
+            <div class="wa-preview-header">
+              <span>COTIZACIÓN AUTOMÁTICA GENERADA</span>
+              <span>0% Comisión Booking</span>
+            </div>
+            <div class="wa-bubble" id="pymeWaText"></div>
+            <a class="btn-wa" id="pymeWaLink" href="#" target="_blank" rel="noopener">
+              Consultar Disponibilidad por WhatsApp →
+            </a>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Video Pitch Showcase -->
+    <section class="video-section" id="video-demo">
+      <div class="video-header">
+        <div>
+          <h2 style="font-size:1.25rem; font-weight:800;">🎬 Mirá en 60 segundos cómo funciona en tu local</h2>
+          <p style="font-size:0.86rem; color:var(--text-muted);">Recorrido real con audio: Turnero Express, Asistente IA sin bloqueo y Cotizador Automático.</p>
+        </div>
+        <span class="badge-live">Audio Español Argentino</span>
+      </div>
+      <video class="video-frame" controls preload="metadata" poster="/cover.png">
+        <source src="/demo.mp4" type="video/mp4" />
+        Tu navegador no soporta video HTML5.
+      </video>
+    </section>
+
+    <section class="cards-3">
+      <div class="info-card">
+        <h3>💈 Para Barberías, Peluquerías y Turnos</h3>
+        <p>Dejá de contestar 40 mensajes mientras trabajás. Tus clientes ven los horarios libres desde tu Instagram o desde el QR del espejo y te mandan el turno listo.</p>
+      </div>
+      <div class="info-card">
+        <h3>🍔 Para Gastronomía y Comercios</h3>
+        <p>Carta digital rápida que carga en 1 segundo en 4G. El cliente elige productos, calcula envío y te manda el pedido directo a WhatsApp sin pagar 30% a apps.</p>
+      </div>
+      <div class="info-card">
+        <h3>⚙️ Automatizaciones a Medida</h3>
+        <p>Conectamos tu negocio con planillas de control, asistentes IA que responden precios de listas grandes y posicionamiento en Google Maps en San Rafael.</p>
+      </div>
+    </section>
+
+    <!-- Direct Contact Banner -->
+    <section class="cta-banner" id="contacto">
+      <div>
+        <h2>¿Querés probarlo en tu negocio en San Rafael?</h2>
+        <p>Trato directo en persona o por WhatsApp. Lo dejamos funcionando en 48 horas con tu marca y tus precios.</p>
+      </div>
+      <div style="display:flex; flex-wrap:wrap; gap:0.65rem;">
+        <a class="btn-primary-wa" href="https://wa.me/5492604059284?text=Hola%20Jos%C3%A9%2C%20vi%20Nexo%20Cuyo%20y%20quiero%20armar%20un%20sistema%20para%20mi%20negocio." target="_blank" rel="noopener">
+          📲 WhatsApp: 260 405-9284
+        </a>
+        <a class="btn-secondary-mail" href="mailto:romanfjose@gmail.com?subject=Consulta%20Nexo%20Cuyo">
+          ✉️ romanfjose@gmail.com
+        </a>
+      </div>
+    </section>
+
+    <footer>
+      <div>
+        <strong>Nexo Cuyo</strong> · José Román · Sistemas, Turneros Web & Automatización IA · San Rafael, Mendoza
+      </div>
+      <div style="display:flex; gap:0.5rem;">
+        <a class="btn-icon" href="mailto:romanfjose@gmail.com">romanfjose@gmail.com</a>
+        <button class="btn-icon" onclick="openStreetModal()">⚡ Personalizar Demo</button>
+      </div>
+    </footer>
+  </main>
+
+  <!-- Sticky Bottom Bar -->
+  <div class="sticky-cta">
+    <span>📍 San Rafael · ¿Querés uno así para tu local?</span>
+    <a href="https://wa.me/5492604059284?text=Hola%20Jos%C3%A9%2C%20vi%20la%20web%20de%20Nexo%20Cuyo%20y%20me%20interesa%20para%20mi%20negocio." target="_blank" rel="noopener">
+      💬 Escribir por WhatsApp
+    </a>
+  </div>
+
+  <!-- Street Customizer Modal -->
+  <div class="modal-backdrop" id="streetModal">
+    <div class="modal">
+      <h3 style="margin-bottom:0.35rem;">⚡ Modo Calle — Personalizar en 5 seg</h3>
+      <p style="font-size:0.82rem; color:var(--text-muted); margin-bottom:1rem;">
+        Escribí el nombre del local antes de entrar a hablar con el dueño para mostrarle la demo con SU marca en tu celular.
+      </p>
+      <div class="step-label">Nombre del Comercio / Barbería</div>
+      <input class="input-field" id="customShopInput" type="text" placeholder="Ej: Barbería Don Mateo" />
+      <div class="step-label">WhatsApp de destino (sin + ni 0)</div>
+      <input class="input-field" id="customWaInput" type="text" placeholder="5492604059284" />
+      <div style="display:flex; gap:0.5rem; margin-top:1.1rem;">
+        <button class="btn-wa" onclick="applyStreetCustomization()">Aplicar en Vivo</button>
+        <button class="btn-icon" onclick="closeStreetModal()">Cerrar</button>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    let state = {
+      shopName: "Barbería & Estudio Centro",
+      waPhone: "5492604059284",
+      service: "Corte Clásico / Fade",
+      price: "$10.000",
+      time: "Hoy 18:30 hs",
+      pymeUnit: "Cabaña Alpina (Hasta 4 pers.)",
+      pymeRate: 65000,
+      nights: 4
+    };
+
+    const params = new URLSearchParams(window.location.search);
+    if (params.get("shop")) state.shopName = params.get("shop");
+    if (params.get("wa")) state.waPhone = params.get("wa");
+
+    function syncTitles() {
+      document.getElementById("barberShopName").textContent = state.shopName;
+      document.getElementById("aiShopName").textContent = state.shopName + " · Asistente IA";
+      document.getElementById("aiShopInline").textContent = state.shopName;
+    }
+
+    function updateBarberPreview() {
+      const client = document.getElementById("clientName").value.trim() || "Cliente";
+      const msg = `¡Hola *${state.shopName}*! 👋\nQuiero reservar el siguiente turno:\n\n✂️ *Servicio:* ${state.service} (${state.price})\n🕒 *Horario:* ${state.time}\n👤 *Nombre:* ${client}\n\n_Enviado desde el Turnero Web · Nexo Cuyo_`;
+      document.getElementById("barberWaText").textContent = msg;
+      document.getElementById("barberWaLink").href = `https://wa.me/${state.waPhone}?text=${encodeURIComponent(msg)}`;
+    }
+
+    function selectService(btn, name, price) {
+      document.querySelectorAll("#barberServices .opt-card").forEach(b => b.classList.remove("selected"));
+      btn.classList.add("selected");
+      state.service = name;
+      state.price = price;
+      updateBarberPreview();
+    }
+
+    function selectTime(btn, time) {
+      document.querySelectorAll("#barberTimes .time-pill").forEach(b => b.classList.remove("selected"));
+      btn.classList.add("selected");
+      state.time = time;
+      updateBarberPreview();
+    }
+
+    function updatePymePreview() {
+      const discount = state.nights >= 7 ? 0.9 : 1;
+      const total = Math.round(state.pymeRate * state.nights * discount);
+      const formattedTotal = "$" + total.toLocaleString("es-AR");
+      const msg = `¡Hola! 👋 Quiero consultar disponibilidad directa:\n\n🏡 *Opción:* ${state.pymeUnit}\n🌙 *Estadía:* ${state.nights} noches${state.nights >= 7 ? ' (10% OFF incluido)' : ''}\n💰 *Total estimado:* ${formattedTotal}\n\n_Cotizado desde Nexo Cuyo_`;
+      document.getElementById("pymeWaText").textContent = msg;
+      document.getElementById("pymeWaLink").href = `https://wa.me/${state.waPhone}?text=${encodeURIComponent(msg)}`;
+    }
+
+    function selectPymeUnit(btn, unit, rate) {
+      btn.parentElement.querySelectorAll(".opt-card").forEach(b => b.classList.remove("selected"));
+      btn.classList.add("selected");
+      state.pymeUnit = unit;
+      state.pymeRate = rate;
+      updatePymePreview();
+    }
+
+    function selectNights(btn, nights) {
+      btn.parentElement.querySelectorAll(".time-pill").forEach(b => b.classList.remove("selected"));
+      btn.classList.add("selected");
+      state.nights = nights;
+      updatePymePreview();
+    }
+
+    function askAi(question) {
+      const win = document.getElementById("aiChatWindow");
+      const u = document.createElement("div");
+      u.className = "msg user";
+      u.textContent = question;
+      win.appendChild(u);
+
+      const b = document.createElement("div");
+      b.className = "msg bot";
+      if (question.includes("horarios")) {
+        b.textContent = `📍 Estamos en San Rafael Centro. Atendemos de Lunes a Sábado de 9:30 a 13:00 y de 17:00 a 21:00 hs. ¿Querés que te separe un turno para hoy?`;
+      } else if (question.includes("MercadoPago")) {
+        b.textContent = `💳 ¡Sí! Aceptamos efectivo, transferencia a alias sin recargo y MercadoPago en el local.`;
+      } else if (question.includes("encargar")) {
+        b.textContent = `✅ ¡Listo! Armé tu pedido de 2 promos para retirar hoy 21:30 hs (Total: $18.000). Tocá el botón verde de la derecha para enviarlo directo al WhatsApp de cocina.`;
+      } else {
+        b.textContent = `⚡ Configuramos este asistente con tu lista de precios, turnos o catálogo en menos de 48 hs, sin tocar ni arriesgar tu línea de WhatsApp.`;
+      }
+      win.appendChild(b);
+      win.scrollTop = win.scrollHeight;
+    }
+
+    function switchTab(id, btn) {
+      ["barber", "ai", "pyme"].forEach(t => {
+        document.getElementById("tab-" + t).style.display = (t === id) ? "block" : "none";
+      });
+      document.querySelectorAll(".sim-tab").forEach(b => b.classList.remove("active"));
+      btn.classList.add("active");
+    }
+
+    function toggleTheme() {
+      const html = document.documentElement;
+      const next = html.getAttribute("data-theme") === "warm" ? "dark" : "warm";
+      html.setAttribute("data-theme", next);
+      document.getElementById("btn-theme-toggle").textContent = next === "warm" ? "🌙 Oscuro" : "☀️ Claro";
+    }
+
+    function openStreetModal() {
+      document.getElementById("customShopInput").value = state.shopName;
+      document.getElementById("customWaInput").value = state.waPhone;
+      document.getElementById("streetModal").classList.add("open");
+    }
+
+    function closeStreetModal() {
+      document.getElementById("streetModal").classList.remove("open");
+    }
+
+    function applyStreetCustomization() {
+      const val = document.getElementById("customShopInput").value.trim();
+      const wa = document.getElementById("customWaInput").value.replace(/\D/g, "");
+      if (val) state.shopName = val;
+      if (wa) state.waPhone = wa;
+      syncTitles();
+      updateBarberPreview();
+      updatePymePreview();
+      closeStreetModal();
+    }
+
+    syncTitles();
+    updateBarberPreview();
+    updatePymePreview();
+  </script>
+</body>
+</html>

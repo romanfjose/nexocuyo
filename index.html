@@ -1,0 +1,2067 @@
+<!DOCTYPE html>
+<html lang="es" data-theme="warm">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Nexo Cuyo — Automatización Inteligente · Recuperá Tu Día</title>
+  <meta name="description" content="Eliminá las tareas repetitivas para siempre. Diseñamos sistemas autónomos que atienden, cotizan, agendan y operan tu negocio las 24 horas mientras vos recuperás tu tiempo." />
+  <link rel="icon" type="image/svg+xml" href="./logo.svg" />
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=JetBrains+Mono:wght@500;600;700&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      timeline-scope: --step-1, --step-2, --step-3, --step-4;
+    }
+
+    :root[data-theme="dark"] {
+      --bg: #07090E;
+      --bg-surface: #0F131C;
+      --bg-elevated: #161B28;
+      --bg-glass: rgba(15, 19, 28, 0.78);
+      --text: #F8FAFC;
+      --text-muted: #94A3B8;
+      --border: rgba(255, 255, 255, 0.09);
+      --border-strong: rgba(255, 255, 255, 0.18);
+      --accent: #F97316;
+      --accent-2: #10B981;
+      --danger: #EF4444;
+      --glow: rgba(249, 115, 22, 0.18);
+      --glow-emerald: rgba(16, 185, 129, 0.18);
+      --shadow-lg: 0 24px 64px -12px rgba(0, 0, 0, 0.65);
+    }
+
+    :root[data-theme="warm"] {
+      --bg: #F7F4ED;
+      --bg-surface: #EFEAE0;
+      --bg-elevated: #FFFFFF;
+      --bg-glass: rgba(247, 244, 237, 0.86);
+      --text: #151311;
+      --text-muted: #57524B;
+      --border: rgba(21, 19, 17, 0.09);
+      --border-strong: rgba(21, 19, 17, 0.17);
+      --accent: #C84B15;
+      --accent-2: #059669;
+      --danger: #DC2626;
+      --glow: rgba(200, 75, 21, 0.13);
+      --glow-emerald: rgba(5, 150, 105, 0.13);
+      --shadow-lg: 0 22px 54px -14px rgba(21, 19, 17, 0.11);
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    html {
+      scroll-behavior: smooth;
+    }
+
+    body {
+      font-family: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      line-height: 1.55;
+      padding-top: 84px;
+      overflow-x: clip;
+      transition: background 0.3s ease, color 0.3s ease;
+    }
+
+    /* 1. Scroll Progress Laser Bar */
+    #progress {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 3px;
+      z-index: 200;
+      background: linear-gradient(90deg, var(--accent), #F59E0B, var(--accent-2));
+      transform-origin: 0 50%;
+      transform: scaleX(0);
+    }
+
+    @media (prefers-reduced-motion: no-preference) {
+      @supports (animation-timeline: scroll()) {
+        @keyframes grow-progress {
+          from { transform: scaleX(0); }
+          to { transform: scaleX(1); }
+        }
+        #progress {
+          animation: grow-progress auto linear;
+          animation-timeline: scroll(root block);
+        }
+      }
+    }
+
+    /* 2. Shrinking Fixed Header on Scroll */
+    header.site-header {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 84px;
+      z-index: 120;
+      background: var(--bg-glass);
+      backdrop-filter: blur(16px);
+      -webkit-backdrop-filter: blur(16px);
+      border-bottom: 1px solid var(--border);
+      display: flex;
+      align-items: center;
+      transition: background 0.25s ease;
+    }
+
+    @media (prefers-reduced-motion: no-preference) {
+      @supports ((animation-timeline: scroll()) and (animation-range: 0% 100%)) {
+        @keyframes header-compact {
+          to {
+            height: 60px;
+            box-shadow: 0 12px 32px rgba(0, 0, 0, 0.28);
+          }
+        }
+        header.site-header {
+          animation: header-compact auto linear both;
+          animation-timeline: scroll(block root);
+          animation-range: 0px 140px;
+        }
+      }
+    }
+
+    .container {
+      width: 100%;
+      max-width: 1180px;
+      margin: 0 auto;
+      padding: 0 1.5rem;
+    }
+
+    .nav-row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      width: 100%;
+    }
+
+    .brand {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.72rem;
+      text-decoration: none;
+      color: var(--text);
+    }
+
+    .brand-logo {
+      width: 38px;
+      height: 38px;
+      flex-shrink: 0;
+      display: block;
+      filter: drop-shadow(0 6px 14px var(--glow));
+      transition: transform 0.28s cubic-bezier(0.22, 1, 0.36, 1);
+    }
+
+    .brand:hover .brand-logo {
+      transform: scale(1.06) rotate(-2deg);
+    }
+
+    .brand-wordmark {
+      display: flex;
+      flex-direction: column;
+      line-height: 1.05;
+    }
+
+    .brand-name {
+      font-weight: 800;
+      font-size: 1.16rem;
+      letter-spacing: -0.035em;
+      color: var(--text);
+    }
+
+    .brand-name span {
+      font-weight: 600;
+      color: var(--text-muted);
+      margin-left: 0.12rem;
+    }
+
+    .brand-sub {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.62rem;
+      font-weight: 600;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--accent);
+      margin-top: 0.14rem;
+    }
+
+    .nav-links {
+      display: flex;
+      align-items: center;
+      gap: 1.5rem;
+    }
+
+    .nav-links a.nav-item {
+      color: var(--text-muted);
+      text-decoration: none;
+      font-size: 0.88rem;
+      font-weight: 600;
+      transition: color 0.15s ease;
+    }
+
+    .nav-links a.nav-item:hover {
+      color: var(--text);
+    }
+
+    @media (max-width: 780px) {
+      .nav-links a.nav-item {
+        display: none;
+      }
+    }
+
+    .btn-ghost {
+      border: 1px solid var(--border-strong);
+      background: var(--bg-elevated);
+      color: var(--text);
+      padding: 0.48rem 0.85rem;
+      border-radius: 999px;
+      font-size: 0.8rem;
+      font-weight: 700;
+      cursor: pointer;
+      font-family: inherit;
+    }
+
+    .btn-cta-sm {
+      background: var(--text);
+      color: var(--bg);
+      text-decoration: none;
+      padding: 0.52rem 1rem;
+      border-radius: 999px;
+      font-size: 0.82rem;
+      font-weight: 800;
+      transition: transform 0.15s ease;
+    }
+
+    .btn-cta-sm:hover {
+      transform: translateY(-1px);
+    }
+
+    /* 3. Ambient Hero Stage */
+    .hero {
+      position: relative;
+      padding: 4.5rem 0 3.5rem;
+      text-align: center;
+      overflow: hidden;
+    }
+
+    .hero::before {
+      content: "";
+      position: absolute;
+      top: -120px;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 780px;
+      height: 420px;
+      background: radial-gradient(ellipse at center, var(--glow) 0%, transparent 70%);
+      pointer-events: none;
+      z-index: 0;
+    }
+
+    .hero > .container {
+      position: relative;
+      z-index: 1;
+    }
+
+    .eyebrow-pill {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      padding: 0.4rem 0.95rem;
+      border-radius: 999px;
+      background: var(--bg-elevated);
+      border: 1px solid var(--border-strong);
+      font-size: 0.8rem;
+      font-weight: 700;
+      color: var(--text-muted);
+      margin-bottom: 1.5rem;
+    }
+
+    .pulse-dot {
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      background: var(--accent-2);
+      box-shadow: 0 0 12px var(--accent-2);
+    }
+
+    .hero h1 {
+      font-size: clamp(2.35rem, 5.6vw, 4.35rem);
+      font-weight: 800;
+      letter-spacing: -0.04em;
+      line-height: 1.05;
+      max-width: 940px;
+      margin: 0 auto 1.35rem;
+    }
+
+    .gradient-text {
+      background: linear-gradient(135deg, var(--accent) 0%, #F59E0B 50%, var(--accent-2) 100%);
+      -webkit-background-clip: text;
+      background-clip: text;
+      color: transparent;
+    }
+
+    .hero p.lead {
+      font-size: clamp(1.05rem, 2vw, 1.26rem);
+      color: var(--text-muted);
+      max-width: 690px;
+      margin: 0 auto 2.2rem;
+      font-weight: 500;
+    }
+
+    .hero-buttons {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 0.9rem;
+      margin-bottom: 2.5rem;
+    }
+
+    .btn-primary-lg {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.6rem;
+      padding: 0.95rem 1.75rem;
+      border-radius: 999px;
+      background: linear-gradient(135deg, var(--accent), #EA580C);
+      color: #fff;
+      font-weight: 800;
+      font-size: 1rem;
+      text-decoration: none;
+      box-shadow: 0 14px 34px var(--glow);
+      transition: transform 0.18s ease, filter 0.18s ease;
+    }
+
+    .btn-primary-lg:hover {
+      transform: translateY(-2px);
+      filter: brightness(1.07);
+    }
+
+    .btn-outline-lg {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.55rem;
+      padding: 0.95rem 1.55rem;
+      border-radius: 999px;
+      background: var(--bg-elevated);
+      border: 1px solid var(--border-strong);
+      color: var(--text);
+      font-weight: 700;
+      font-size: 0.98rem;
+      text-decoration: none;
+      transition: transform 0.18s ease;
+    }
+
+    .btn-outline-lg:hover {
+      transform: translateY(-2px);
+    }
+
+    .scroll-cue {
+      font-size: 0.78rem;
+      font-weight: 700;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: var(--text-muted);
+      display: inline-flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 0.35rem;
+    }
+
+    /* 4. THE BONE-DEEP SCROLLYTELLING ENGINE */
+    .scrolly-section {
+      position: relative;
+      padding: 2rem 0 5rem;
+    }
+
+    .scrolly-layout {
+      display: grid;
+      grid-template-columns: 0.95fr 1.05fr;
+      gap: 3rem;
+      align-items: start;
+    }
+
+    @media (max-width: 920px) {
+      .scrolly-layout {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    .story-triggers {
+      display: flex;
+      flex-direction: column;
+      gap: 32vh;
+      padding: 8vh 0 18vh;
+    }
+
+    .story-step {
+      padding: 1.85rem;
+      border-radius: 20px;
+      background: var(--bg-surface);
+      border: 1px solid var(--border);
+      opacity: 0.38;
+      transform: scale(0.97);
+      transition: opacity 0.35s ease, transform 0.35s ease, border-color 0.35s ease, box-shadow 0.35s ease;
+    }
+
+    .story-step.is-active {
+      opacity: 1;
+      transform: scale(1);
+      background: var(--bg-elevated);
+      border-color: var(--accent);
+      box-shadow: var(--shadow-lg);
+    }
+
+    .story-step:nth-child(1) { view-timeline: --step-1 block; }
+    .story-step:nth-child(2) { view-timeline: --step-2 block; }
+    .story-step:nth-child(3) { view-timeline: --step-3 block; }
+    .story-step:nth-child(4) { view-timeline: --step-4 block; }
+
+    .step-num {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.76rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      color: var(--accent);
+      margin-bottom: 0.55rem;
+      display: block;
+    }
+
+    .story-step h2 {
+      font-size: 1.55rem;
+      font-weight: 800;
+      letter-spacing: -0.025em;
+      line-height: 1.2;
+      margin-bottom: 0.65rem;
+    }
+
+    .story-step p {
+      color: var(--text-muted);
+      font-size: 0.96rem;
+    }
+
+    /* Sticky Right Morphing Machine */
+    .sticky-machine-wrap {
+      position: sticky;
+      top: 108px;
+    }
+
+    @media (max-width: 920px) {
+      .sticky-machine-wrap {
+        position: relative;
+        top: 0;
+        order: -1;
+      }
+      .story-triggers {
+        gap: 1.5rem;
+        padding: 1rem 0;
+      }
+    }
+
+    .machine-stage {
+      background: var(--bg-elevated);
+      border: 1px solid var(--border-strong);
+      border-radius: 24px;
+      padding: 1.6rem;
+      min-height: 460px;
+      box-shadow: var(--shadow-lg);
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .machine-topbar {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding-bottom: 1rem;
+      border-bottom: 1px solid var(--border);
+    }
+
+    .machine-status-pill {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.75rem;
+      font-weight: 700;
+      padding: 0.3rem 0.75rem;
+      border-radius: 999px;
+      background: rgba(239, 68, 68, 0.15);
+      color: var(--danger);
+      transition: all 0.35s ease;
+    }
+
+    .machine-stage[data-phase="2"] .machine-status-pill {
+      background: rgba(249, 115, 22, 0.16);
+      color: var(--accent);
+    }
+
+    .machine-stage[data-phase="3"] .machine-status-pill,
+    .machine-stage[data-phase="4"] .machine-status-pill {
+      background: var(--glow-emerald);
+      color: var(--accent-2);
+    }
+
+    .hours-meter {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.82rem;
+      color: var(--text-muted);
+    }
+
+    .hours-meter strong {
+      font-size: 1.05rem;
+      color: var(--text);
+    }
+
+    /* Morphing Task Nodes Inside Stage (Driven continuously by scroll progress --p: 0 -> 1) */
+    .nodes-arena {
+      position: relative;
+      height: 290px;
+      margin: 1rem 0;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      gap: 0.65rem;
+    }
+
+    .task-node {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0.8rem 1rem;
+      border-radius: 13px;
+      background: var(--bg-surface);
+      border: 1px solid var(--border-strong);
+      font-size: 0.86rem;
+      font-weight: 600;
+      transition: border-color 0.25s ease, background 0.25s ease;
+      will-change: transform;
+    }
+
+    .node-badge {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.73rem;
+      padding: 0.2rem 0.55rem;
+      border-radius: 6px;
+      background: rgba(239, 68, 68, 0.14);
+      color: var(--danger);
+      transition: all 0.35s ease;
+    }
+
+    .machine-stage[data-phase="2"] .node-badge {
+      background: rgba(249, 115, 22, 0.16);
+      color: var(--accent);
+    }
+
+    .machine-stage[data-phase="3"] .node-badge,
+    .machine-stage[data-phase="4"] .node-badge {
+      background: var(--glow-emerald);
+      color: var(--accent-2);
+    }
+
+    .machine-footer {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding-top: 0.95rem;
+      border-top: 1px solid var(--border);
+      font-size: 0.82rem;
+      color: var(--text-muted);
+    }
+
+    /* 5. Interactive Time-Back ROI Slider */
+    .roi-section {
+      padding: 4.5rem 0;
+    }
+
+    .roi-card {
+      background: var(--bg-elevated);
+      border: 1px solid var(--border-strong);
+      border-radius: 26px;
+      padding: 2.5rem;
+      box-shadow: var(--shadow-lg);
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 2.5rem;
+      align-items: center;
+    }
+
+    @media (max-width: 860px) {
+      .roi-card {
+        grid-template-columns: 1fr;
+        padding: 1.65rem;
+      }
+    }
+
+    .slider-input {
+      width: 100%;
+      accent-color: var(--accent);
+      height: 8px;
+      cursor: pointer;
+      margin: 1.25rem 0 0.5rem;
+    }
+
+    .roi-metrics {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 1rem;
+    }
+
+    .metric-box {
+      background: var(--bg-surface);
+      border: 1px solid var(--border);
+      border-radius: 18px;
+      padding: 1.35rem;
+    }
+
+    .metric-val {
+      font-size: clamp(1.8rem, 3.2vw, 2.5rem);
+      font-weight: 800;
+      letter-spacing: -0.03em;
+      color: var(--accent-2);
+      font-family: 'JetBrains Mono', monospace;
+    }
+
+    .metric-lbl {
+      font-size: 0.83rem;
+      color: var(--text-muted);
+      margin-top: 0.25rem;
+    }
+
+    /* 6. View-Transition Live Architecture Sandbox */
+    .sandbox-section {
+      padding: 3.5rem 0 4.5rem;
+    }
+
+    .section-head {
+      text-align: center;
+      max-width: 720px;
+      margin: 0 auto 2.25rem;
+    }
+
+    .section-head h2 {
+      font-size: clamp(1.8rem, 3.6vw, 2.75rem);
+      font-weight: 800;
+      letter-spacing: -0.03em;
+      margin-bottom: 0.65rem;
+    }
+
+    .section-head p {
+      color: var(--text-muted);
+      font-size: 1rem;
+    }
+
+    .mode-switcher {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 0.6rem;
+      margin-bottom: 1.75rem;
+    }
+
+    .mode-btn {
+      position: relative;
+      border: 1px solid var(--border-strong);
+      background: var(--bg-surface);
+      color: var(--text-muted);
+      padding: 0.7rem 1.25rem;
+      border-radius: 999px;
+      font-family: inherit;
+      font-size: 0.88rem;
+      font-weight: 700;
+      cursor: pointer;
+      transition: color 0.15s ease;
+    }
+
+    .mode-btn.active {
+      background: var(--text);
+      color: var(--bg);
+      border-color: var(--text);
+    }
+
+    .mode-btn-bespoke {
+      border-color: color-mix(in srgb, var(--accent) 55%, var(--border-strong));
+      color: var(--text);
+      background: linear-gradient(135deg, var(--glow), transparent);
+    }
+
+    .spark-chips {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.5rem;
+      margin-bottom: 0.85rem;
+    }
+
+    .spark-chip {
+      border: 1px solid var(--border-strong);
+      background: var(--bg-surface);
+      color: var(--text);
+      padding: 0.48rem 0.8rem;
+      border-radius: 999px;
+      font-family: inherit;
+      font-size: 0.8rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.15s ease;
+    }
+
+    .spark-chip:hover,
+    .spark-chip.selected {
+      border-color: var(--accent);
+      background: var(--glow);
+      color: var(--accent);
+    }
+
+    .bespoke-input {
+      width: 100%;
+      padding: 0.82rem 1rem;
+      border-radius: 12px;
+      border: 1.5px solid var(--border-strong);
+      background: var(--bg-surface);
+      color: var(--text);
+      font-family: inherit;
+      font-size: 0.92rem;
+      outline: none;
+      transition: border-color 0.18s ease;
+    }
+
+    .bespoke-input:focus {
+      border-color: var(--accent);
+    }
+
+    .btn-terminal-cta {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 0.5rem;
+      margin-top: 1rem;
+      padding: 0.78rem 1rem;
+      border-radius: 10px;
+      background: #10B981;
+      color: #051B11;
+      font-family: 'Plus Jakarta Sans', sans-serif;
+      font-weight: 800;
+      font-size: 0.88rem;
+      text-decoration: none;
+      transition: filter 0.15s ease, transform 0.15s ease;
+    }
+
+    .btn-terminal-cta:hover {
+      filter: brightness(1.08);
+      transform: translateY(-1px);
+    }
+
+    .sandbox-panel {
+      background: var(--bg-elevated);
+      border: 1px solid var(--border-strong);
+      border-radius: 24px;
+      padding: 2rem;
+      box-shadow: var(--shadow-lg);
+      view-transition-name: sandbox-card;
+    }
+
+    .sandbox-grid {
+      display: grid;
+      grid-template-columns: 1.1fr 0.9fr;
+      gap: 2rem;
+      align-items: center;
+    }
+
+    @media (max-width: 820px) {
+      .sandbox-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    .flow-steps {
+      display: flex;
+      flex-direction: column;
+      gap: 0.75rem;
+      margin-top: 1.1rem;
+    }
+
+    .flow-item {
+      display: flex;
+      align-items: center;
+      gap: 0.8rem;
+      padding: 0.85rem 1rem;
+      border-radius: 12px;
+      background: var(--bg-surface);
+      border: 1px solid var(--border);
+      font-size: 0.9rem;
+      font-weight: 600;
+    }
+
+    .flow-check {
+      width: 24px;
+      height: 24px;
+      border-radius: 50%;
+      background: var(--glow-emerald);
+      color: var(--accent-2);
+      display: grid;
+      place-items: center;
+      font-size: 0.78rem;
+      font-weight: 800;
+      flex-shrink: 0;
+    }
+
+    .live-terminal {
+      background: #090C12;
+      color: #E2E8F0;
+      border: 1px solid rgba(255,255,255,0.12);
+      border-radius: 16px;
+      padding: 1.35rem;
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.8rem;
+      line-height: 1.65;
+    }
+
+    /* 7. Scroll Entry/Exit Bento Grid */
+    .bento-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 1.25rem;
+      margin-bottom: 4.5rem;
+    }
+
+    @media (max-width: 880px) {
+      .bento-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    .bento-card {
+      background: var(--bg-elevated);
+      border: 1px solid var(--border);
+      border-radius: 22px;
+      padding: 1.75rem;
+      transition: border-color 0.2s ease;
+    }
+
+    .bento-card:hover {
+      border-color: var(--accent);
+    }
+
+    .bento-icon {
+      font-size: 1.5rem;
+      margin-bottom: 0.85rem;
+      display: inline-block;
+    }
+
+    .bento-card h3 {
+      font-size: 1.15rem;
+      font-weight: 800;
+      margin-bottom: 0.5rem;
+    }
+
+    .bento-card p {
+      font-size: 0.9rem;
+      color: var(--text-muted);
+    }
+
+    @media (prefers-reduced-motion: no-preference) {
+      @supports ((animation-timeline: view()) and (animation-range: entry)) {
+        @keyframes card-enter {
+          from {
+            opacity: 0;
+            transform: translateY(36px) scale(0.95);
+          }
+          to {
+            opacity: 1;
+            transform: translateY(0) scale(1);
+          }
+        }
+        .bento-card {
+          animation: card-enter auto linear backwards;
+          animation-timeline: view(block);
+          animation-range: entry 8% cover 28%;
+        }
+      }
+    }
+
+    /* 8. Final Executive CTA */
+    .final-cta {
+      background: linear-gradient(135deg, var(--bg-elevated) 0%, var(--bg-surface) 100%);
+      border: 1.5px solid var(--border-strong);
+      border-radius: 28px;
+      padding: 3.5rem 2rem;
+      text-align: center;
+      margin-bottom: 4rem;
+      box-shadow: var(--shadow-lg);
+    }
+
+    .final-cta h2 {
+      font-size: clamp(1.95rem, 4vw, 3rem);
+      font-weight: 800;
+      letter-spacing: -0.03em;
+      max-width: 720px;
+      margin: 0 auto 0.9rem;
+    }
+
+    .final-cta p {
+      color: var(--text-muted);
+      max-width: 580px;
+      margin: 0 auto 2rem;
+      font-size: 1.05rem;
+    }
+
+    footer {
+      border-top: 1px solid var(--border);
+      padding: 2rem 0 3.5rem;
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: space-between;
+      align-items: center;
+      gap: 1rem;
+      font-size: 0.84rem;
+      color: var(--text-muted);
+    }
+
+    footer a {
+      color: var(--text-muted);
+      text-decoration: none;
+    }
+
+    footer a:hover {
+      color: var(--text);
+    }
+
+    /* 9. Floating Bottom-Right AI Widget + Teaser Bubble (Intercom / Linear Standard) */
+    .nexo-widget-dock {
+      position: fixed;
+      right: 24px;
+      bottom: 24px;
+      z-index: 160;
+      display: flex;
+      flex-direction: column;
+      align-items: flex-end;
+      gap: 12px;
+      pointer-events: none;
+    }
+
+    .nexo-widget-dock > * {
+      pointer-events: auto;
+    }
+
+    /* Floating Popover Chat Window */
+    .nexo-chat-window {
+      width: min(408px, calc(100vw - 32px));
+      height: min(585px, calc(100vh - 110px));
+      background: var(--bg-elevated);
+      border: 1.5px solid var(--border-strong);
+      border-radius: 22px;
+      box-shadow: 0 28px 70px -12px rgba(0, 0, 0, 0.38);
+      display: flex;
+      flex-direction: column;
+      overflow: hidden;
+      transform-origin: bottom right;
+      opacity: 0;
+      transform: scale(0.88) translateY(16px);
+      visibility: hidden;
+      pointer-events: none;
+      transition: opacity 0.24s cubic-bezier(0.22, 1, 0.36, 1), transform 0.24s cubic-bezier(0.22, 1, 0.36, 1), visibility 0.24s;
+    }
+
+    .nexo-chat-window.is-open {
+      opacity: 1;
+      transform: scale(1) translateY(0);
+      visibility: visible;
+      pointer-events: auto;
+    }
+
+    .ai-studio-header {
+      padding: 1rem 1.15rem;
+      background: #151311;
+      color: #F8FAFC;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 0.75rem;
+    }
+
+    .ai-agent-id {
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+    }
+
+    .ai-avatar-ring {
+      width: 38px;
+      height: 38px;
+      border-radius: 11px;
+      background: #221F1C;
+      display: grid;
+      place-items: center;
+      position: relative;
+      flex-shrink: 0;
+    }
+
+    .ai-online-dot {
+      position: absolute;
+      bottom: -2px;
+      right: -2px;
+      width: 11px;
+      height: 11px;
+      border-radius: 50%;
+      background: #10B981;
+      border: 2px solid #151311;
+    }
+
+    .chat-close-btn {
+      width: 32px;
+      height: 32px;
+      border-radius: 50%;
+      border: 1px solid rgba(255, 255, 255, 0.16);
+      background: rgba(255, 255, 255, 0.08);
+      color: #F8FAFC;
+      font-size: 0.95rem;
+      cursor: pointer;
+      display: grid;
+      place-items: center;
+    }
+
+    .chat-close-btn:hover {
+      background: rgba(255, 255, 255, 0.16);
+    }
+
+    .ai-chat-log {
+      flex: 1;
+      padding: 1.1rem;
+      overflow-y: auto;
+      display: flex;
+      flex-direction: column;
+      gap: 0.85rem;
+      background: var(--bg);
+    }
+
+    .ai-msg {
+      max-width: 86%;
+      padding: 0.8rem 1rem;
+      border-radius: 15px;
+      font-size: 0.88rem;
+      line-height: 1.5;
+      white-space: pre-wrap;
+    }
+
+    .ai-msg.assistant {
+      align-self: flex-start;
+      background: var(--bg-elevated);
+      border: 1px solid var(--border-strong);
+      color: var(--text);
+      border-bottom-left-radius: 4px;
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
+    }
+
+    .ai-msg.user {
+      align-self: flex-end;
+      background: #151311;
+      color: #F8FAFC;
+      border-bottom-right-radius: 4px;
+      font-weight: 500;
+    }
+
+    :root[data-theme="dark"] .ai-msg.user {
+      background: var(--accent);
+      color: #fff;
+    }
+
+    .ai-proposal-card {
+      align-self: stretch;
+      background: linear-gradient(135deg, #111622 0%, #172030 100%);
+      color: #F8FAFC;
+      border: 1.5px solid rgba(16, 185, 129, 0.6);
+      border-radius: 16px;
+      padding: 1.05rem;
+      margin-top: 0.25rem;
+    }
+
+    .ai-proposal-grid {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 0.5rem;
+      margin: 0.75rem 0 0.9rem;
+    }
+
+    .ai-prop-item {
+      background: rgba(255, 255, 255, 0.05);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      border-radius: 9px;
+      padding: 0.55rem 0.75rem;
+    }
+
+    .ai-prop-lbl {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.64rem;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      color: #34D399;
+      margin-bottom: 0.1rem;
+    }
+
+    .ai-prop-val {
+      font-size: 0.81rem;
+      font-weight: 600;
+      color: #F1F5F9;
+    }
+
+    .ai-starter-bar {
+      padding: 0.55rem 0.95rem;
+      background: var(--bg);
+      border-top: 1px solid var(--border);
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.38rem;
+    }
+
+    .ai-starter-chip {
+      border: 1px solid var(--border-strong);
+      background: var(--bg-elevated);
+      color: var(--text);
+      padding: 0.36rem 0.68rem;
+      border-radius: 999px;
+      font-family: inherit;
+      font-size: 0.74rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: border-color 0.15s ease, color 0.15s ease;
+    }
+
+    .ai-starter-chip:hover {
+      border-color: var(--accent);
+      color: var(--accent);
+    }
+
+    .ai-form {
+      padding: 0.75rem 0.85rem;
+      border-top: 1px solid var(--border);
+      display: flex;
+      gap: 0.5rem;
+      background: var(--bg-elevated);
+    }
+
+    .ai-input {
+      flex: 1;
+      padding: 0.68rem 0.95rem;
+      border-radius: 999px;
+      border: 1.5px solid var(--border-strong);
+      background: var(--bg-surface);
+      color: var(--text);
+      font-family: inherit;
+      font-size: 0.88rem;
+      outline: none;
+    }
+
+    .ai-input:focus {
+      border-color: var(--accent);
+    }
+
+    .ai-send-btn {
+      padding: 0.68rem 1.05rem;
+      border-radius: 999px;
+      border: none;
+      background: linear-gradient(135deg, var(--accent), #EA580C);
+      color: #fff;
+      font-family: inherit;
+      font-weight: 800;
+      font-size: 0.84rem;
+      cursor: pointer;
+      white-space: nowrap;
+    }
+
+    .ai-send-btn:disabled {
+      opacity: 0.55;
+      cursor: wait;
+    }
+
+    /* Bottom Launcher Row: Teaser Callout Pill + Iconic Round Bot Button */
+    .nexo-launcher-row {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .nexo-teaser-bubble {
+      background: var(--bg-elevated);
+      color: var(--text);
+      border: 1.5px solid var(--border-strong);
+      box-shadow: 0 14px 34px rgba(0, 0, 0, 0.16);
+      border-radius: 16px 16px 4px 16px;
+      padding: 0.7rem 1rem;
+      font-size: 0.85rem;
+      font-weight: 700;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      gap: 0.55rem;
+      max-width: 270px;
+      line-height: 1.3;
+      transition: transform 0.2s ease, border-color 0.2s ease;
+    }
+
+    .nexo-teaser-bubble:hover {
+      transform: translateY(-2px);
+      border-color: var(--accent);
+    }
+
+    .nexo-teaser-dismiss {
+      border: none;
+      background: transparent;
+      color: var(--text-muted);
+      font-size: 0.9rem;
+      cursor: pointer;
+      padding: 0 2px;
+      line-height: 1;
+    }
+
+    .nexo-bot-trigger {
+      position: relative;
+      width: 62px;
+      height: 62px;
+      border-radius: 50%;
+      border: 2px solid rgba(255, 255, 255, 0.18);
+      background: #151311;
+      box-shadow: 0 16px 36px rgba(0, 0, 0, 0.34), 0 0 0 4px var(--glow);
+      cursor: pointer;
+      display: grid;
+      place-items: center;
+      transition: transform 0.22s cubic-bezier(0.22, 1, 0.36, 1);
+      flex-shrink: 0;
+    }
+
+    .nexo-bot-trigger:hover {
+      transform: scale(1.07);
+    }
+
+    .nexo-unread-badge {
+      position: absolute;
+      top: -3px;
+      right: -2px;
+      width: 21px;
+      height: 21px;
+      border-radius: 50%;
+      background: #10B981;
+      color: #052E16;
+      font-size: 0.72rem;
+      font-weight: 800;
+      display: grid;
+      place-items: center;
+      border: 2px solid var(--bg);
+    }
+
+    /* Mandatory Reduced Motion Safety */
+    @media (prefers-reduced-motion: reduce) {
+      *, ::before, ::after {
+        scroll-behavior: auto !important;
+      }
+      .bento-card,
+      header.site-header,
+      #progress,
+      .task-node {
+        animation: none !important;
+        transition: none !important;
+      }
+      ::view-transition-group(*),
+      ::view-transition-old(*),
+      ::view-transition-new(*) {
+        animation: none !important;
+      }
+    }
+  </style>
+</head>
+<body>
+  <!-- Decorative Scroll Progress Bar -->
+  <div id="progress" aria-hidden="true"></div>
+
+  <header class="site-header">
+    <div class="container nav-row">
+      <a href="#" class="brand" aria-label="Nexo Cuyo Inicio">
+        <svg class="brand-logo" viewBox="0 0 44 44" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+          <rect x="1" y="1" width="42" height="42" rx="11.5" fill="#151311"/>
+          <rect x="1.6" y="1.6" width="40.8" height="40.8" rx="10.9" stroke="rgba(255,255,255,0.12)" stroke-width="1.2"/>
+          <defs>
+            <linearGradient id="nxWarm" x1="10" y1="33" x2="28" y2="11" gradientUnits="userSpaceOnUse">
+              <stop offset="0%" stop-color="#EA580C"/>
+              <stop offset="100%" stop-color="#F59E0B"/>
+            </linearGradient>
+            <linearGradient id="nxCool" x1="18" y1="33" x2="34" y2="11" gradientUnits="userSpaceOnUse">
+              <stop offset="0%" stop-color="#10B981"/>
+              <stop offset="100%" stop-color="#34D399"/>
+            </linearGradient>
+          </defs>
+          <path d="M12.5 31V14.5C12.5 13.12 14.15 12.42 15.12 13.4L25.5 23.9" stroke="url(#nxWarm)" stroke-width="4.2" stroke-linecap="round" stroke-linejoin="round"/>
+          <path d="M31.5 13V29.5C31.5 30.88 29.85 31.58 28.88 30.6L18.5 20.1" stroke="#151311" stroke-width="7.4" stroke-linecap="round" stroke-linejoin="round"/>
+          <path d="M31.5 13V29.5C31.5 30.88 29.85 31.58 28.88 30.6L18.5 20.1" stroke="url(#nxCool)" stroke-width="4.2" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+        <div class="brand-wordmark">
+          <span class="brand-name">Nexo<span>Cuyo</span></span>
+          <span class="brand-sub">Sistemas Autónomos</span>
+        </div>
+      </a>
+      <div class="nav-links">
+        <a href="#transformacion" class="nav-item">Cómo Funciona</a>
+        <a href="#impacto" class="nav-item">Tiempo Recuperado</a>
+        <a href="#sistemas" class="nav-item">Arquitecturas</a>
+        <button class="btn-ghost" id="themeToggle" onclick="toggleTheme()">🌙 Oscuro</button>
+        <button type="button" class="btn-cta-sm" style="border:none;cursor:pointer;font-family:inherit;" onclick="openAiWidget()">Prototipo Gratis →</button>
+      </div>
+    </div>
+  </header>
+
+  <main>
+    <!-- HERO -->
+    <section class="hero">
+      <div class="container">
+        <div class="eyebrow-pill">
+          <span class="pulse-dot"></span>
+          <span>Ingeniería de Automatización & Sistemas Autónomos</span>
+        </div>
+        <h1>
+          Dejá de hacer trabajo de máquina.<br />
+          <span class="gradient-text">Recuperá tu día entero.</span>
+        </h1>
+        <p class="lead">
+          Si vos o tu equipo repiten la misma tarea más de tres veces por día—responder lo mismo, agendar, cotizar, pasar datos de un lado a otro—estás perdiendo vida y dinero. Nosotros construimos el sistema que lo hace solo, en segundos y sin errores.
+        </p>
+        <div class="hero-buttons">
+          <button type="button" class="btn-primary-lg" style="border:none;cursor:pointer;font-family:inherit;" onclick="openAiWidget()">
+            ✨ Diagnosticar mi Negocio con IA (Prototipo Gratis)
+          </button>
+          <a class="btn-outline-lg" href="https://wa.me/5492604059284?text=Hola%20Jos%C3%A9%2C%20quiero%20eliminar%20tareas%20repetitivas%20y%20automatizar%20mi%20operaci%C3%B3n." target="_blank" rel="noopener">
+            💬 WhatsApp Directo
+          </a>
+        </div>
+        <div class="scroll-cue">
+          <span>Deslizá y sentí el cambio en tiempo real</span>
+          <span>↓</span>
+        </div>
+      </div>
+    </section>
+
+    <!-- SCROLLYTELLING SPINE -->
+    <section class="scrolly-section" id="transformacion">
+      <div class="container scrolly-layout">
+        <div class="story-triggers" id="storyTriggers">
+          <article class="story-step is-active" data-step="1">
+            <span class="step-num">01 · El Cuello de Botella</span>
+            <h2>Tu atención está secuestrada por micro-interrupciones.</h2>
+            <p>Mensajes sueltos a cualquier hora, preguntas repetidas, presupuestos a mano y planillas que nadie actualiza. Cuando parás de trabajar para contestar, perdés foco; cuando no contestás, perdés la venta.</p>
+          </article>
+
+          <article class="story-step" data-step="2">
+            <span class="step-num">02 · Captura & Orden Instantáneo</span>
+            <h2>Cada consulta entra a un embudo inteligente que nunca duerme.</h2>
+            <p>Apenas un cliente escribe o toca tu enlace, el sistema interpreta qué necesita, consulta tus precios o disponibilidad real y filtra el ruido sin que tengas que abrir el teléfono.</p>
+          </article>
+
+          <article class="story-step" data-step="3">
+            <span class="step-num">03 · Ejecución Silenciosa</span>
+            <h2>Tus herramientas empiezan a hablar entre sí sin vos en el medio.</h2>
+            <p>Turnos confirmados, cotizaciones exactas calculadas al instante, recordatorios enviados y registros guardados automáticamente. Cero copiar y pegar. Cero olvidos.</p>
+          </article>
+
+          <article class="story-step" data-step="4">
+            <span class="step-num">04 · Tu Tiempo de Vuelta</span>
+            <h2>Vos volvés a dirigir. La máquina hace el trabajo pesado.</h2>
+            <p>Abrís tu teléfono y solo ves operaciones ya cerradas, clientes listos y métricas claras. El caos diario desaparece y recuperás tus tardes intactas.</p>
+          </article>
+        </div>
+
+        <div class="sticky-machine-wrap">
+          <div class="machine-stage" id="machineStage" data-phase="1">
+            <div class="machine-topbar">
+              <span class="machine-status-pill" id="stageBadge">● MODO MANUAL · CAOS ACTIVO</span>
+              <span class="hours-meter">Carga manual: <strong id="hoursCounter">18.5 hs/sem</strong></span>
+            </div>
+
+            <div class="nodes-arena">
+              <div class="task-node">
+                <span id="node1Text">📱 24 mensajes sin leer: "¿Precio y horarios?"</span>
+                <span class="node-badge" id="node1Badge">Pendiente</span>
+              </div>
+              <div class="task-node">
+                <span id="node2Text">📅 Cruce de horarios y turnos por chat</span>
+                <span class="node-badge" id="node2Badge">Manual</span>
+              </div>
+              <div class="task-node">
+                <span id="node3Text">🧾 Armar presupuesto en PDF / calculadora</span>
+                <span class="node-badge" id="node3Badge">Demorado</span>
+              </div>
+              <div class="task-node">
+                <span id="node4Text">📊 Copiar datos de ventas a la planilla</span>
+                <span class="node-badge" id="node4Badge">Olvidado</span>
+              </div>
+            </div>
+
+            <div class="machine-footer">
+              <span id="stageFooterLeft">Intervención humana requerida en cada paso</span>
+              <strong id="stageFooterRight" style="color:var(--accent);">Scroll ↓</strong>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- INTERACTIVE TIME-BACK CALCULATOR -->
+    <section class="roi-section" id="impacto">
+      <div class="container">
+        <div class="roi-card">
+          <div>
+            <span class="step-num">Calculadora de Libertad Operativa</span>
+            <h2 style="font-size:clamp(1.65rem,3vw,2.25rem);font-weight:800;letter-spacing:-0.03em;margin-bottom:0.65rem;">
+              ¿Cuánto vale dejar de repetir lo mismo todos los días?
+            </h2>
+            <p style="color:var(--text-muted);font-size:0.95rem;">
+              Mové el control según cuántas consultas, reservas, pedidos o tareas repetitivas manejás por día:
+            </p>
+            <input type="range" min="10" max="150" value="45" class="slider-input" id="taskSlider" oninput="updateRoi(this.value)" aria-label="Cantidad de tareas o consultas repetitivas por día" />
+            <div style="display:flex;justify-content:space-between;font-family:'JetBrains Mono',monospace;font-size:0.84rem;color:var(--text-muted);">
+              <span>10 / día</span>
+              <strong style="color:var(--accent);font-size:1rem;" id="sliderReadout">45 interacciones / día</strong>
+              <span>150 / día</span>
+            </div>
+          </div>
+
+          <div class="roi-metrics">
+            <div class="metric-box">
+              <div class="metric-val" id="hoursSavedVal">68 hs</div>
+              <div class="metric-lbl">Recuperadas cada mes para vos</div>
+            </div>
+            <div class="metric-box">
+              <div class="metric-val" id="daysSavedVal">8.5 días</div>
+              <div class="metric-lbl">Laborales completos libres al mes</div>
+            </div>
+            <div class="metric-box">
+              <div class="metric-val">0.8 seg</div>
+              <div class="metric-lbl">Tiempo de respuesta al cliente 24/7</div>
+            </div>
+            <div class="metric-box">
+              <div class="metric-val">0%</div>
+              <div class="metric-lbl">Comisiones por venta o reserva</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- VIEW-TRANSITION ARCHITECTURE SANDBOX -->
+    <section class="sandbox-section" id="sistemas">
+      <div class="container">
+        <div class="section-head">
+          <h2>Elegí qué parte de tu día querés delegar primero.</h2>
+          <p>Sistemas hechos a medida que se adaptan a tu flujo real—sin obligarte a cambiar tu número ni pagar comisiones por transacción.</p>
+        </div>
+
+        <div class="mode-switcher" role="tablist" aria-label="Módulos de automatización">
+          <button class="mode-btn active" onclick="switchMode('ventas', this)">⚡ Atención, Cotización & Cierre 24/7</button>
+          <button class="mode-btn" onclick="switchMode('agenda', this)">📅 Agenda & Turnos Autónomos</button>
+          <button class="mode-btn" onclick="switchMode('operaciones', this)">🔗 Operaciones, Planillas & Alertas</button>
+          <button class="mode-btn mode-btn-bespoke" id="btn-mode-medida" onclick="switchMode('medida', this)">✨ Tu Flujo Único · A Medida</button>
+        </div>
+
+        <div class="sandbox-panel" id="sandboxPanel">
+          <div class="sandbox-grid">
+            <div>
+              <span class="step-num" id="sbEyebrow">MÓDULO 01 · VENTAS SIN FRICCIÓN</span>
+              <h3 id="sbHeading" tabindex="-1" style="font-size:1.6rem;font-weight:800;margin-bottom:0.6rem;outline:none;">
+                Tus clientes reciben respuesta, presupuesto y cierre en segundos—aunque sean las 11 de la noche.
+              </h3>
+              <p id="sbDesc" style="color:var(--text-muted);font-size:0.95rem;">
+                Un asistente entrenado con tus precios, catálogo y reglas comerciales guía al cliente y te entrega el pedido o presupuesto ya confirmado en tu WhatsApp.
+              </p>
+              <div class="flow-steps" id="sbSteps">
+                <div class="flow-item"><span class="flow-check">✓</span> Responde precios, stock y dudas frecuentes al instante</div>
+                <div class="flow-item"><span class="flow-check">✓</span> Calcula totales, descuentos y envíos sin intervención humana</div>
+                <div class="flow-item"><span class="flow-check">✓</span> Cero riesgo de bloqueo en tu línea de WhatsApp</div>
+              </div>
+            </div>
+
+            <div class="live-terminal" id="sbTerminal">
+              <div style="color:#94A3B8;margin-bottom:0.6rem;">// Flujo en vivo · Ejecución autónoma</div>
+              <div><span style="color:#F97316;">[22:41:03]</span> Cliente abre link inteligente desde WhatsApp</div>
+              <div><span style="color:#38BDF8;">[22:41:05]</span> IA responde consulta de disponibilidad + precios</div>
+              <div><span style="color:#38BDF8;">[22:41:14]</span> Carrito / Cotización calculada sin errores</div>
+              <div><span style="color:#10B981;">[22:41:16]</span> ✓ Orden lista enviada a tu teléfono para cobrar</div>
+              <div style="margin-top:0.9rem;padding-top:0.75rem;border-top:1px solid rgba(255,255,255,0.1);color:#10B981;font-weight:700;">
+                Tiempo invertido por vos: 0 minutos.
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- SCROLL ENTRY BENTO GRID -->
+    <section class="container">
+      <div class="bento-grid">
+        <div class="bento-card">
+          <span class="bento-icon">🧠</span>
+          <h3>Entiende tu Negocio Real</h3>
+          <p>Nada de menús robóticos rígidos donde el cliente se frustra. Configuramos flujos limpios e inteligencia artificial con tus reglas exactas.</p>
+        </div>
+        <div class="bento-card">
+          <span class="bento-icon">🛡️</span>
+          <h3>Tu Línea Siempre Protegida</h3>
+          <p>Arquitectura web + enlace directo que respeta el 100% de las reglas oficiales, sin bots piratas que pongan en riesgo tu número principal.</p>
+        </div>
+        <div class="bento-card">
+          <span class="bento-icon">🚀</span>
+          <h3>Implementación en Días, No Meses</h3>
+          <p>Auditamos dónde se te va el tiempo hoy, construimos el sistema completo y te lo entregamos funcionando llave en mano.</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- FINAL CTA -->
+    <section class="container" id="contacto">
+      <div class="final-cta">
+        <h2>Contanos qué tarea repetitiva querés borrar de tu semana.</h2>
+        <p>Escribinos en 1 toque. Analizamos tu flujo actual sin cargo y te mostramos cómo se ve automatizado antes de empezar.</p>
+        <div class="hero-buttons" style="margin-bottom:0;">
+          <a class="btn-primary-lg" href="https://wa.me/5492604059284?text=Hola%20Jos%C3%A9%2C%20vi%20Nexo%20Cuyo%20y%20quiero%20automatizar%20una%20parte%20de%20mi%20negocio." target="_blank" rel="noopener">
+            📲 Hablar por WhatsApp (+54 9 260 405-9284)
+          </a>
+          <a class="btn-outline-lg" href="mailto:romanfjose@gmail.com?subject=Automatizaci%C3%B3n%20con%20Nexo%20Cuyo">
+            ✉️ romanfjose@gmail.com
+          </a>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="container">
+    <div style="display:flex;align-items:center;gap:0.65rem;">
+      <img src="./logo.svg" alt="" width="28" height="28" style="border-radius:8px;" />
+      <span><strong>Nexo Cuyo</strong> · Ingeniería de Automatización & Software Autónomo</span>
+    </div>
+    <div style="display:flex;gap:1.25rem;align-items:center;">
+      <a href="./v1/" title="Ver Prototipo 1 (Enfoque Local)">Prototipo v1</a>
+      <a href="mailto:romanfjose@gmail.com">romanfjose@gmail.com</a>
+      <a href="https://wa.me/5492604059284" target="_blank" rel="noopener">+54 9 260 405-9284</a>
+    </div>
+  </footer>
+
+  <script>
+    // 1. Scrollytelling Phase Synchronization (Transforms Chaos -> Autonomous Execution as user scrolls)
+    const PHASES = {
+      1: {
+        badge: "● MODO MANUAL · CAOS ACTIVO",
+        hours: "18.5 hs/sem",
+        n1: ["📱 24 mensajes sin leer: \"¿Precio y horarios?\"", "Pendiente"],
+        n2: ["📅 Cruce interminable de horarios por chat", "Manual"],
+        n3: ["🧾 Armar presupuesto a mano con calculadora", "Demorado"],
+        n4: ["📊 Copiar datos de clientes a la planilla", "Olvidado"],
+        left: "Intervención humana requerida en cada paso",
+        right: "Deslizá ↓"
+      },
+      2: {
+        badge: "⚡ CAPTURA ACTIVA · ORDENANDO FLUJO",
+        hours: "6.0 hs/sem",
+        n1: ["⚡ Enlace inteligente recibe al cliente al instante", "Capturado"],
+        n2: ["⚡ Disponibilidad y catálogo leídos en vivo", "En Curso"],
+        n3: ["⚡ Reglas de precios y descuentos aplicadas", "Calculando"],
+        n4: ["⚡ Datos estructurados listos para procesar", "Validado"],
+        left: "El filtro inteligente absorbe el 80% de consultas",
+        right: "Conectando ↓"
+      },
+      3: {
+        badge: "✓ SISTEMA AUTÓNOMO · EJECUTANDO 24/7",
+        hours: "0.5 hs/sem",
+        n1: ["✓ Consulta respondida en 0.8 seg con tus datos", "Automático"],
+        n2: ["✓ Turno / Reserva bloqueada sin superposiciones", "Confirmado"],
+        n3: ["✓ Cotización exacta entregada sin errores", "Cerrado"],
+        n4: ["✓ Planilla y base de clientes actualizada sola", "Sincronizado"],
+        left: "Cero copiar y pegar · Cero ventas enfriadas",
+        right: "Resultado ↓"
+      },
+      4: {
+        badge: "★ DÍA RECUPERADO · CONTROL TOTAL",
+        hours: "0.0 hs/sem",
+        n1: ["★ +14 operaciones listas recibidas en tu teléfono", "Listo"],
+        n2: ["★ Agenda llena sin interrumpir tu trabajo", "100% Solo"],
+        n3: ["★ Clientes atendidos incluso de madrugada", "24/7 Activo"],
+        n4: ["★ Tu foco puesto en crecer—o descansar", "Tiempo Libre"],
+        left: "Vos dirigís el negocio. La máquina ejecuta.",
+        right: "✓ Completado"
+      }
+    };
+
+    const stageEl = document.getElementById("machineStage");
+    const stepsEls = Array.from(document.querySelectorAll(".story-step"));
+    const nodeEls = Array.from(stageEl.querySelectorAll(".task-node"));
+    const scrollySection = document.getElementById("transformacion");
+    const CHAOS_VECTORS = [
+      { x: -12, y: -8, r: -2.8 },
+      { x: 15, y: 3, r: 2.3 },
+      { x: -14, y: 5, r: -2.0 },
+      { x: 12, y: 9, r: 2.6 }
+    ];
+
+    function applyPhaseText(stepNum) {
+      const p = PHASES[stepNum];
+      if (!p || stageEl.getAttribute("data-phase") === String(stepNum)) return;
+      stageEl.setAttribute("data-phase", String(stepNum));
+      document.getElementById("stageBadge").textContent = p.badge;
+      document.getElementById("node1Text").textContent = p.n1[0];
+      document.getElementById("node1Badge").textContent = p.n1[1];
+      document.getElementById("node2Text").textContent = p.n2[0];
+      document.getElementById("node2Badge").textContent = p.n2[1];
+      document.getElementById("node3Text").textContent = p.n3[0];
+      document.getElementById("node3Badge").textContent = p.n3[1];
+      document.getElementById("node4Text").textContent = p.n4[0];
+      document.getElementById("node4Badge").textContent = p.n4[1];
+      document.getElementById("stageFooterLeft").textContent = p.left;
+      document.getElementById("stageFooterRight").textContent = p.right;
+    }
+
+    function syncScrollyPhysics() {
+      const rect = scrollySection.getBoundingClientRect();
+      const totalTravel = Math.max(1, rect.height - window.innerHeight * 0.75);
+      const rawProgress = (-rect.top + window.innerHeight * 0.25) / totalTravel;
+      const progress = Math.min(1, Math.max(0, rawProgress));
+
+      // Continuous countdown of wasted manual hours: 18.5 -> 0.0 hs/sem
+      const liveHours = (18.5 * Math.pow(1 - progress, 1.35)).toFixed(1);
+      document.getElementById("hoursCounter").textContent = `${liveHours} hs/sem`;
+
+      // Physical straightening of crooked chaos cards on every pixel of scroll
+      const chaosFactor = Math.max(0, 1 - progress * 2.1); // Fully aligned by 48% scroll
+      const borderColor = progress < 0.32
+        ? "rgba(239, 68, 68, 0.48)"
+        : progress < 0.64
+          ? "rgba(249, 115, 22, 0.5)"
+          : "rgba(16, 185, 129, 0.52)";
+
+      if (!window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
+        nodeEls.forEach((node, i) => {
+          const v = CHAOS_VECTORS[i];
+          node.style.transform = `translate3d(${(v.x * chaosFactor).toFixed(1)}px, ${(v.y * chaosFactor).toFixed(1)}px, 0) rotate(${(v.r * chaosFactor).toFixed(2)}deg)`;
+          node.style.borderColor = borderColor;
+        });
+      }
+
+      // Find closest step to viewport focal line (42% from top)
+      const focalY = window.innerHeight * 0.42;
+      let closestIdx = 1;
+      let bestDist = Infinity;
+      stepsEls.forEach((el, idx) => {
+        const r = el.getBoundingClientRect();
+        const center = r.top + r.height / 2;
+        const dist = Math.abs(center - focalY);
+        if (dist < bestDist) {
+          bestDist = dist;
+          closestIdx = idx + 1;
+        }
+      });
+
+      stepsEls.forEach((el, idx) => el.classList.toggle("is-active", idx + 1 === closestIdx));
+      applyPhaseText(closestIdx);
+    }
+
+    window.addEventListener("scroll", syncScrollyPhysics, { passive: true });
+    window.addEventListener("resize", syncScrollyPhysics, { passive: true });
+    syncScrollyPhysics();
+
+    // Fallbacks for browsers without CSS Scroll-Driven Animations
+    if (!CSS.supports("animation-timeline", "scroll()")) {
+      const progress = document.getElementById("progress");
+      const header = document.querySelector("header.site-header");
+      window.addEventListener("scroll", () => {
+        const scrollable = Math.max(1, document.documentElement.scrollHeight - window.innerHeight);
+        const pct = Math.min(1, Math.max(0, window.scrollY / scrollable));
+        if (progress) progress.style.transform = `scaleX(${pct})`;
+        if (header) {
+          const shrinkPct = Math.min(1, window.scrollY / 140);
+          header.style.height = `${84 - 24 * shrinkPct}px`;
+        }
+      }, { passive: true });
+    }
+
+    if (!CSS.supports("(animation-timeline: view()) and (animation-range: entry)")) {
+      const bentoObserver = new IntersectionObserver((entries) => {
+        entries.forEach((e) => {
+          if (e.isIntersecting) {
+            e.target.style.opacity = "1";
+            e.target.style.transform = "translateY(0) scale(1)";
+          }
+        });
+      }, { threshold: 0.15 });
+      document.querySelectorAll(".bento-card").forEach((c) => bentoObserver.observe(c));
+    }
+
+    // 2. Interactive Time-Back Calculator
+    function updateRoi(val) {
+      const daily = Number(val);
+      document.getElementById("sliderReadout").textContent = `${daily} interacciones / día`;
+      // ~3 mins wasted per context-switching interaction * 30 days
+      const monthlyHours = Math.round((daily * 3 * 30) / 60);
+      const workDays = (monthlyHours / 8).toFixed(1);
+      document.getElementById("hoursSavedVal").textContent = `${monthlyHours} hs`;
+      document.getElementById("daysSavedVal").textContent = `${workDays} días`;
+    }
+
+    // 3. View-Transition Sandbox Switcher (with mandatory focus routing)
+    const SANDBOX_MODES = {
+      ventas: {
+        eyebrow: "MÓDULO 01 · VENTAS SIN FRICCIÓN",
+        heading: "Tus clientes reciben respuesta, presupuesto y cierre en segundos—aunque sean las 11 de la noche.",
+        desc: "Un asistente entrenado con tus precios, catálogo y reglas comerciales guía al cliente y te entrega el pedido o presupuesto ya confirmado en tu WhatsApp.",
+        steps: [
+          "Responde precios, stock y dudas frecuentes al instante",
+          "Calcula totales, descuentos y envíos sin intervención humana",
+          "Cero riesgo de bloqueo en tu línea de WhatsApp"
+        ],
+        logs: [
+          ["[22:41:03]", "#F97316", "Cliente abre link inteligente desde WhatsApp"],
+          ["[22:41:05]", "#38BDF8", "IA responde consulta de disponibilidad + precios"],
+          ["[22:41:14]", "#38BDF8", "Carrito / Cotización calculada sin errores"],
+          ["[22:41:16]", "#10B981", "✓ Orden lista enviada a tu teléfono para cobrar"]
+        ]
+      },
+      agenda: {
+        eyebrow: "MÓDULO 02 · AGENDA AUTÓNOMA",
+        heading: "Tu calendario se llena solo sin cruzar veinte mensajes para coordinar una hora.",
+        desc: "Tus clientes eligen servicio y bloque horario real en tres toques. El sistema bloquea el espacio y te avisa con todo confirmado.",
+        steps: [
+          "Muestra únicamente bloques reales disponibles en el acto",
+          "Envía confirmación estructurada lista para agendar en 1 toque",
+          "Elimina tiempos muertos y ausencias por falta de respuesta"
+        ],
+        logs: [
+          ["[14:12:09]", "#F97316", "Cliente abre selector de turnos desde tu perfil"],
+          ["[14:12:15]", "#38BDF8", "Selecciona servicio + bloque libre 18:30 hs"],
+          ["[14:12:18]", "#38BDF8", "Valida datos y genera ficha de reserva"],
+          ["[14:12:19]", "#10B981", "✓ Turno confirmado sin interrumpir tu jornada"]
+        ]
+      },
+      operaciones: {
+        eyebrow: "MÓDULO 03 · OPERACIONES CONECTADAS",
+        heading: "Eliminá para siempre el copiar y pegar entre chats, planillas y sistemas internos.",
+        desc: "Conectamos tus formularios, canales de entrada, hojas de cálculo y tableros para que cada dato se registre, clasifique y dispare alertas solo.",
+        steps: [
+          "Sincronización automática con Google Sheets, bases de datos y CRM",
+          "Reportes diarios de ventas y pendientes directo a tu teléfono",
+          "Flujos a medida para el proceso exacto que hoy te quita horas"
+        ],
+        logs: [
+          ["[09:00:01]", "#F97316", "Nueva operación confirmada en canal de entrada"],
+          ["[09:00:02]", "#38BDF8", "Fila registrada y clasificada en planilla maestra"],
+          ["[09:00:03]", "#38BDF8", "Comprobante y resumen generados automáticamente"],
+          ["[09:00:04]", "#10B981", "✓ Resumen ejecutivo enviado al dueño"]
+        ]
+      },
+      medida: {
+        eyebrow: "INGENIERÍA A TU MEDIDA · CERO PLANTILLAS ENLATADAS",
+        heading: "Si hoy lo hace una persona frente a una pantalla siguiendo reglas, hacemos que ocurra solo.",
+        desc: "Ningún negocio real entra en una caja estándar. Tocá un ejemplo abajo o escribí en tus palabras qué tarea repetitiva querés sacarte de encima:",
+        customInteractive: true
+      }
+    };
+
+    let currentBespokeIdea = "Leer facturas y remitos en PDF y cargarlos solos a mi planilla";
+
+    function updateBespokeTerminal(ideaText) {
+      const clean = (ideaText || "").trim() || "Automatizar proceso propio de mi negocio";
+      currentBespokeIdea = clean;
+      const waMsg = `Hola José, estuve probando el diseñador a medida de Nexo Cuyo. Quiero automatizar esto en mi negocio: "${clean}"`;
+      const waHref = `https://wa.me/5492604059284?text=${encodeURIComponent(waMsg)}`;
+      document.getElementById("sbTerminal").innerHTML = `
+        <div style="color:#94A3B8;margin-bottom:0.55rem;">// Arquitectura personalizada detectada en vivo</div>
+        <div><span style="color:#F59E0B;">[TU CASO]</span> "${clean.replace(/</g, "&lt;")}"</div>
+        <div><span style="color:#38BDF8;">[CAPTURA]</span> Extracción y lectura automática sin carga manual</div>
+        <div><span style="color:#38BDF8;">[REGLAS]</span> Validación exacta con la lógica de tu negocio</div>
+        <div><span style="color:#10B981;">[ENTREGA]</span> ✓ Sistema propio funcionando 24/7 llave en mano</div>
+        <a class="btn-terminal-cta" href="${waHref}" target="_blank" rel="noopener">
+          🚀 Construir Este Flujo para Mi Negocio →
+        </a>
+      `;
+    }
+
+    function pickSpark(btn, text) {
+      document.querySelectorAll(".spark-chip").forEach((c) => c.classList.remove("selected"));
+      btn.classList.add("selected");
+      const inp = document.getElementById("bespokeInput");
+      if (inp) inp.value = text;
+      updateBespokeTerminal(text);
+    }
+
+    function renderModeDOM(modeKey, clickedBtn) {
+      const m = SANDBOX_MODES[modeKey];
+      document.querySelectorAll(".mode-btn").forEach((b) => b.classList.toggle("active", b === clickedBtn));
+      document.getElementById("sbEyebrow").textContent = m.eyebrow;
+      document.getElementById("sbHeading").textContent = m.heading;
+      document.getElementById("sbDesc").textContent = m.desc;
+
+      if (m.customInteractive) {
+        document.getElementById("sbSteps").innerHTML = `
+          <div class="spark-chips">
+            <button type="button" class="spark-chip selected" onclick="pickSpark(this, 'Leer facturas y remitos en PDF y cargarlos solos a mi planilla')">📄 Leer facturas / PDFs solos</button>
+            <button type="button" class="spark-chip" onclick="pickSpark(this, 'Coordinar estados de pedidos, repartos o técnicos en calle')">🚚 Repartos, stock o técnicos</button>
+            <button type="button" class="spark-chip" onclick="pickSpark(this, 'Comparar listas de precios de proveedores automáticamente')">🔎 Listas de proveedores</button>
+            <button type="button" class="spark-chip" onclick="pickSpark(this, 'Crear una app o panel interno a medida para mi equipo')">🧩 App / Panel interno propio</button>
+          </div>
+          <input
+            type="text"
+            id="bespokeInput"
+            class="bespoke-input"
+            value="${currentBespokeIdea.replace(/"/g, "&quot;")}"
+            placeholder="Escribí acá qué tarea repetitiva querés eliminar..."
+            oninput="updateBespokeTerminal(this.value)"
+            aria-label="Describí el proceso único que querés automatizar"
+          />
+        `;
+        updateBespokeTerminal(currentBespokeIdea);
+        return;
+      }
+
+      document.getElementById("sbSteps").innerHTML = m.steps
+        .map((s) => `<div class="flow-item"><span class="flow-check">✓</span> ${s}</div>`)
+        .join("");
+      document.getElementById("sbTerminal").innerHTML = `
+        <div style="color:#94A3B8;margin-bottom:0.6rem;">// Flujo en vivo · Ejecución autónoma</div>
+        ${m.logs.map(([t, c, txt]) => `<div><span style="color:${c};">${t}</span> ${txt}</div>`).join("")}
+        <div style="margin-top:0.9rem;padding-top:0.75rem;border-top:1px solid rgba(255,255,255,0.1);color:#10B981;font-weight:700;">
+          Tiempo invertido por vos: 0 minutos.
+        </div>
+      `;
+    }
+
+    function switchMode(modeKey, clickedBtn) {
+      const heading = document.getElementById("sbHeading");
+      if (!document.startViewTransition) {
+        renderModeDOM(modeKey, clickedBtn);
+        heading?.focus({ preventScroll: true });
+        return;
+      }
+      const transition = document.startViewTransition(() => {
+        renderModeDOM(modeKey, clickedBtn);
+      });
+      transition.finished.finally(() => {
+        heading?.focus({ preventScroll: true });
+      });
+    }
+
+    // 4. Dual Theme Toggle
+    function toggleTheme() {
+      const html = document.documentElement;
+      const next = html.getAttribute("data-theme") === "dark" ? "warm" : "dark";
+      html.setAttribute("data-theme", next);
+      document.getElementById("themeToggle").textContent = next === "dark" ? "☀️ Claro" : "🌙 Oscuro";
+    }
+
+    // 5. Live AI Diagnostic Architect (/api/chat -> gemini-2.5-flash)
+    const aiHistory = [];
+    let aiBusy = false;
+
+    function parseFicha(rawText) {
+      const match = rawText.match(/\[FICHA_LISTA\]([\s\S]*?)\[\/FICHA_LISTA\]/i);
+      if (!match) return { cleanText: rawText.trim(), ficha: null };
+      const cleanText = rawText.replace(match[0], "").trim();
+      const block = match[1];
+      const getField = (label) => {
+        const m = block.match(new RegExp(`${label}\\s*:\\s*(.+)`, "i"));
+        return m ? m[1].trim() : "Personalizado";
+      };
+      return {
+        cleanText,
+        ficha: {
+          negocio: getField("Negocio"),
+          dolor: getField("Dolor"),
+          actual: getField("Actual"),
+          prototipo: getField("Prototipo")
+        }
+      };
+    }
+
+    function appendAiBubble(role, text, ficha = null) {
+      const log = document.getElementById("aiChatLog");
+      if (text) {
+        const div = document.createElement("div");
+        div.className = `ai-msg ${role}`;
+        const safe = text.replace(/[&<>"']/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c]));
+        div.innerHTML = safe.replace(/\*\*(.+?)\*\*/g, "<strong>$1</strong>");
+        log.appendChild(div);
+      }
+      if (ficha) {
+        const waText = [
+          "¡Hola José! Armé mi diagnóstico con el Arquitecto IA de Nexo Cuyo y quiero pedir mi Prototipo Funcional Sin Cargo:",
+          `• Negocio: ${ficha.negocio}`,
+          `• Cuello de botella: ${ficha.dolor}`,
+          `• Cómo lo hacemos hoy: ${ficha.actual}`,
+          `• Prototipo propuesto: ${ficha.prototipo}`
+        ].join("\n");
+        const waUrl = `https://wa.me/5492604059284?text=${encodeURIComponent(waText)}`;
+
+        const card = document.createElement("div");
+        card.className = "ai-proposal-card";
+        const esc = (s) => s.replace(/[&<>"']/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c]));
+        card.innerHTML = `
+          <div style="font-family:'JetBrains Mono',monospace;font-size:0.74rem;font-weight:700;color:#34D399;letter-spacing:0.08em;text-transform:uppercase;">
+            ✓ FICHA TÉCNICA LISTA · PROTOTIPO SIN CARGO DESBLOQUEADO
+          </div>
+          <div class="ai-proposal-grid">
+            <div class="ai-prop-item"><div class="ai-prop-lbl">Negocio</div><div class="ai-prop-val">${esc(ficha.negocio)}</div></div>
+            <div class="ai-prop-item"><div class="ai-prop-lbl">Fuga de Tiempo</div><div class="ai-prop-val">${esc(ficha.dolor)}</div></div>
+            <div class="ai-prop-item"><div class="ai-prop-lbl">Hoy</div><div class="ai-prop-val">${esc(ficha.actual)}</div></div>
+            <div class="ai-prop-item"><div class="ai-prop-lbl">Prototipo a Medida</div><div class="ai-prop-val">${esc(ficha.prototipo)}</div></div>
+          </div>
+          <a class="btn-terminal-cta" style="margin-top:0;padding:0.9rem 1.2rem;font-size:0.95rem;" href="${waUrl}" target="_blank" rel="noopener">
+            🎁 Enviar Esta Ficha y Pedir mi Prototipo Gratis por WhatsApp →
+          </a>
+        `;
+        log.appendChild(card);
+      }
+      log.scrollTop = log.scrollHeight;
+    }
+
+    let lastSentTs = 0;
+
+    function openAiWidget() {
+      const win = document.getElementById("nexoChatWindow");
+      const teaser = document.getElementById("nexoTeaserBubble");
+      const badge = document.getElementById("nexoUnreadBadge");
+      win.classList.add("is-open");
+      if (teaser) teaser.style.display = "none";
+      if (badge) badge.style.display = "none";
+      setTimeout(() => document.getElementById("aiInput")?.focus(), 180);
+    }
+
+    function closeAiWidget() {
+      document.getElementById("nexoChatWindow").classList.remove("is-open");
+    }
+
+    function toggleAiWidget() {
+      const win = document.getElementById("nexoChatWindow");
+      if (win.classList.contains("is-open")) closeAiWidget();
+      else openAiWidget();
+    }
+
+    function dismissTeaser(e) {
+      e.stopPropagation();
+      const teaser = document.getElementById("nexoTeaserBubble");
+      if (teaser) teaser.style.display = "none";
+    }
+
+    document.addEventListener("keydown", (e) => {
+      if (e.key === "Escape") closeAiWidget();
+    });
+
+    async function sendAiMessage(userText) {
+      const trimmed = (userText || "").trim().slice(0, 450);
+      if (!trimmed || aiBusy) return;
+      if (Date.now() - lastSentTs < 1500) return; // Client anti-spam cooldown
+      lastSentTs = Date.now();
+      aiBusy = true;
+
+      const starters = document.getElementById("aiStarters");
+      if (starters) starters.style.display = "none";
+
+      const input = document.getElementById("aiInput");
+      const btn = document.getElementById("aiSendBtn");
+      const hp = document.getElementById("aiHpField")?.value || "";
+      input.value = "";
+      btn.disabled = true;
+      btn.textContent = "···";
+
+      appendAiBubble("user", trimmed);
+      aiHistory.push({ role: "user", text: trimmed });
+
+      try {
+        const res = await fetch("/api/chat", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+            "X-Nexo-Client": "nexo-widget-v2"
+          },
+          body: JSON.stringify({ messages: aiHistory, hp_field: hp })
+        });
+        const data = await res.json();
+        if (!res.ok || !data.ok) throw new Error(data.error || "Error");
+        const { cleanText, ficha } = parseFicha(data.reply);
+        aiHistory.push({ role: "model", text: data.reply });
+        appendAiBubble("assistant", cleanText, ficha);
+      } catch (e) {
+        appendAiBubble("assistant", "Ya tomé nota de tu caso. Tocá acá abajo para enviármelo directo por WhatsApp y te armo el prototipo sin cargo:", {
+          negocio: "Consulta Directa",
+          dolor: trimmed.slice(0, 120),
+          actual: "A relevar",
+          prototipo: "Sistema automatizado a medida"
+        });
+      } finally {
+        aiBusy = false;
+        btn.disabled = false;
+        btn.textContent = "Enviar";
+        input.focus();
+      }
+    }
+
+    function handleAiSubmit(e) {
+      e.preventDefault();
+      sendAiMessage(document.getElementById("aiInput").value);
+    }
+
+    function sendStarter(text) {
+      openAiWidget();
+      sendAiMessage(text);
+    }
+  </script>
+
+  <!-- Floating Bottom-Right AI Widget (Teaser Callout + Popover Window) -->
+  <div class="nexo-widget-dock" aria-label="Asistente de diagnóstico Nexo Cuyo">
+    <div class="nexo-chat-window" id="nexoChatWindow" role="dialog" aria-label="Chat de diagnóstico con IA">
+      <div class="ai-studio-header">
+        <div class="ai-agent-id">
+          <div class="ai-avatar-ring">
+            <img src="./logo.svg" alt="" width="24" height="24" />
+            <span class="ai-online-dot"></span>
+          </div>
+          <div>
+            <div style="font-weight:800;font-size:0.92rem;line-height:1.15;">Nexo IA · Diagnóstico</div>
+            <div style="font-size:0.72rem;color:#A1A1AA;">En línea · Prototipo funcional sin cargo</div>
+          </div>
+        </div>
+        <button type="button" class="chat-close-btn" onclick="closeAiWidget()" aria-label="Cerrar chat">✕</button>
+      </div>
+
+      <div class="ai-chat-log" id="aiChatLog" aria-live="polite">
+        <div class="ai-msg assistant">¡Hola! 👋 Contame a qué se dedica tu negocio y qué tarea repetitiva te saca tiempo hoy. En 2 preguntas rápidas te armo una propuesta con un <strong>prototipo funcional gratis</strong>.</div>
+      </div>
+
+      <div class="ai-starter-bar" id="aiStarters">
+        <button type="button" class="ai-starter-chip" onclick="sendStarter('Tenemos 2 sucursales y perdemos mucho tiempo con presupuestos y stock')">🏬 Presupuestos y stock</button>
+        <button type="button" class="ai-starter-chip" onclick="sendStarter('Respondo decenas de mensajes por día por precios y turnos')">📱 Mensajes y turnos</button>
+        <button type="button" class="ai-starter-chip" onclick="sendStarter('Paso datos de pedidos y facturas a planillas a mano')">📊 Planillas y facturas</button>
+      </div>
+
+      <form class="ai-form" id="aiChatForm" onsubmit="handleAiSubmit(event)">
+        <input type="text" id="aiHpField" name="website_url" tabindex="-1" autocomplete="off" aria-hidden="true" style="position:absolute;left:-9999px;width:1px;height:1px;opacity:0;" />
+        <input
+          type="text"
+          id="aiInput"
+          class="ai-input"
+          placeholder="Hacé una pregunta o contame tu caso..."
+          autocomplete="off"
+          maxlength="450"
+        />
+        <button type="submit" class="ai-send-btn" id="aiSendBtn">Enviar</button>
+      </form>
+    </div>
+
+    <div class="nexo-launcher-row">
+      <div class="nexo-teaser-bubble" id="nexoTeaserBubble" onclick="openAiWidget()">
+        <span>👋 ¿Qué tarea te quita tiempo? <strong>Hacé una pregunta</strong></span>
+        <button type="button" class="nexo-teaser-dismiss" onclick="dismissTeaser(event)" aria-label="Ocultar aviso">×</button>
+      </div>
+      <button type="button" class="nexo-bot-trigger" id="nexoBotTrigger" onclick="toggleAiWidget()" aria-label="Abrir chat con IA">
+        <img src="./logo.svg" alt="" width="34" height="34" style="border-radius:9px;" />
+        <span class="nexo-unread-badge" id="nexoUnreadBadge">1</span>
+      </button>
+    </div>
+  </div>
+</body>
+</html>

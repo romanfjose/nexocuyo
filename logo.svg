@@ -1,0 +1,19 @@
+<svg viewBox="0 0 44 44" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <rect x="1" y="1" width="42" height="42" rx="11.5" fill="#151311"/>
+  <rect x="1.6" y="1.6" width="40.8" height="40.8" rx="10.9" stroke="rgba(255,255,255,0.12)" stroke-width="1.2"/>
+  <defs>
+    <linearGradient id="nxWarm" x1="10" y1="33" x2="28" y2="11" gradientUnits="userSpaceOnUse">
+      <stop offset="0%" stop-color="#EA580C"/>
+      <stop offset="100%" stop-color="#F59E0B"/>
+    </linearGradient>
+    <linearGradient id="nxCool" x1="18" y1="33" x2="34" y2="11" gradientUnits="userSpaceOnUse">
+      <stop offset="0%" stop-color="#10B981"/>
+      <stop offset="100%" stop-color="#34D399"/>
+    </linearGradient>
+  </defs>
+  <!-- Left + Diagonal Warm Architectural Ribbon (Forms Left Pillar + Bridge of N) -->
+  <path d="M12.5 31V14.5C12.5 13.12 14.15 12.42 15.12 13.4L25.5 23.9" stroke="url(#nxWarm)" stroke-width="4.2" stroke-linecap="round" stroke-linejoin="round"/>
+  <!-- Negative-space precision underpass mask + Right Cool Autonomous Ribbon (Forms C-turn + Right Pillar of N) -->
+  <path d="M31.5 13V29.5C31.5 30.88 29.85 31.58 28.88 30.6L18.5 20.1" stroke="#151311" stroke-width="7.4" stroke-linecap="round" stroke-linejoin="round"/>
+  <path d="M31.5 13V29.5C31.5 30.88 29.85 31.58 28.88 30.6L18.5 20.1" stroke="url(#nxCool)" stroke-width="4.2" stroke-linecap="round" stroke-linejoin="round"/>
+</svg>
